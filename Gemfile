@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.7'
 # Use jdbcpostgresql as the database for Active Record
@@ -31,6 +30,6 @@ gem 'sdoc', '~> 0.4.0',                                 group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-
-
 gem "torquebox", "3.1.1"
+gem "torquebox-server", group: :development
+gem "rest-client"

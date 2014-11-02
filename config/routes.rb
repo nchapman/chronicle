@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  resources :users
+
+  get 'auth/sign_in', as: :sign_in
+  get 'auth/complete'
+  delete 'auth/sign_out', as: :sign_out
+
+  root 'home#index'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
