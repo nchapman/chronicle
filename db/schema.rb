@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141103210052) do
+ActiveRecord::Schema.define(version: 20141103214913) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,16 @@ ActiveRecord::Schema.define(version: 20141103210052) do
   end
 
   add_index "pages", ["url"], name: "index_pages_on_url", using: :btree
+
+  create_table "saves", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "user_id"
+    t.uuid     "page_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "saves", ["page_id"], name: "index_saves_on_page_id", using: :btree
+  add_index "saves", ["user_id"], name: "index_saves_on_user_id", using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.string   "fxa_id"
