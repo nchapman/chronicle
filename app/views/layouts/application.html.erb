@@ -7,6 +7,22 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+<h1>Chronicle</h1>
+
+<% if current_user %>
+  <img src="<%= current_user.avatar_url %>" />
+  <strong>Hello there <%= current_user.email %></strong>
+  <%= link_to 'Sign out', sign_out_path, method: :delete %>
+
+  <ul>
+    <li><%= link_to 'Home', root_path %></li>
+    <li><%= link_to 'Saves', saves_path %></li>
+    <li><%= link_to 'Likes', likes_path %></li>
+  </ul>
+
+<% else %>
+  <%= link_to 'Sign in', sign_in_path %>
+<% end %>
 
 <%= yield %>
 
