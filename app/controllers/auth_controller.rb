@@ -22,7 +22,7 @@ class AuthController < ApplicationController
       # Fetch profile from the profile server
       profile = fetch_profile(oauth_token, oauth_token_type)
 
-      # Lookup the user by uid
+      # Lookup the user by fxa uid
       user = User.where(fxa_id: profile['uid']).first_or_initialize
 
       user.email = profile['email']
@@ -31,6 +31,7 @@ class AuthController < ApplicationController
 
       user.save!
 
+      # Sign in the user
       self.current_user = user
     end
 
@@ -38,7 +39,7 @@ class AuthController < ApplicationController
   end
 
   def sign_out
-    session.delete(:user_id)
+    forget_current_user
 
     redirect_to root_path
   end
