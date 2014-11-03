@@ -30,7 +30,8 @@ gem 'sdoc', '~> 0.4.0',                                 group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem "torquebox", "3.1.1"
-gem "torquebox-server", group: :development
-gem "rest-client"
-gem "settingslogic"
+gem 'torquebox', '3.1.1'
+gem 'torquebox-server', group: :development
+gem 'rest-client'
+gem 'settingslogic'
+gem 'attribute_normalizer'

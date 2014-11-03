@@ -33,6 +33,7 @@ GEM
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     arel (5.0.1.20140414130214)
+    attribute_normalizer (1.2.0)
     blankslate (2.1.2.4)
     builder (3.2.2)
     coffee-rails (4.0.1)
@@ -162,6 +163,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcpostgresql-adapter
+  attribute_normalizer
   coffee-rails (~> 4.0.0)
   jbuilder (~> 2.0)
   jquery-rails

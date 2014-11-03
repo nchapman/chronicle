@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :likes
+  resources :pages
   resources :users
 
   get 'auth/sign_in', as: :sign_in
