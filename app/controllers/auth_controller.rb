@@ -1,16 +1,10 @@
 class AuthController < ApplicationController
-  OAUTH_BASE_URL = 'https://oauth-latest.dev.lcip.org/v1'
-  OAUTH_CLIENT_ID = '1f9bbddcb3e160ab'
-  OAUTH_CLIENT_SECRET = '24bf8caeaa685e2e42d9a75b48511f83adffaf6fcdd174ce8749358a376be911'
-
-  PROFILE_BASE_URL = 'https://latest.dev.lcip.org/profile/v1'
-
   def sign_in
     # Create a nonce that we can verify upon completion
     state = session[:oauth_state] = SecureRandom.hex(8)
     action = params[:action] == 'signup' ? 'signup' : 'signin'
 
-    redirect_to "#{OAUTH_BASE_URL}/authorization?client_id=#{OAUTH_CLIENT_ID}&state=#{state}&action=#{action}&scope=profile"
+    redirect_to get_oauth_redirect_url(state, action)
   end
 
   def complete
@@ -40,25 +34,29 @@ class AuthController < ApplicationController
       self.current_user = user
     end
 
-    redirect_to '/'
+    redirect_to root_path
   end
 
   def sign_out
     session.delete(:user_id)
 
-    redirect_to '/'
+    redirect_to root_path
   end
 
   private
 
+    def get_oauth_redirect_url(state, action)
+      "#{Settings.oauth.base_url}/authorization?client_id=#{Settings.oauth.client.id}&state=#{state}&action=#{action}&scope=profile"
+    end
+
     def fetch_token(code)
-      response = RestClient.post("#{OAUTH_BASE_URL}/token", { client_id: OAUTH_CLIENT_ID, client_secret: OAUTH_CLIENT_SECRET, code: code }.to_json, content_type: :json)
+      response = RestClient.post("#{Settings.oauth.base_url}/token", { client_id: Settings.oauth.client.id, client_secret: Settings.oauth.client.secret, code: code }.to_json, content_type: :json)
 
       JSON.parse(response)
     end
 
     def fetch_profile(oauth_token, oauth_token_type)
-      response = RestClient.get("#{PROFILE_BASE_URL}/profile", authorization: "#{oauth_token_type.capitalize} #{oauth_token}")
+      response = RestClient.get("#{Settings.oauth.profile.base_url}/profile", authorization: "#{oauth_token_type.capitalize} #{oauth_token}")
 
       JSON.parse(response)
     end

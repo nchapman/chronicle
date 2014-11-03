@@ -33,3 +33,4 @@ gem 'sdoc', '~> 0.4.0',                                 group: :doc
 gem "torquebox", "3.1.1"
 gem "torquebox-server", group: :development
 gem "rest-client"
+gem "settingslogic"

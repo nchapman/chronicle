@@ -1,0 +1,8 @@
+development:
+  oauth:
+    base_url: https://oauth-latest.dev.lcip.org/v1
+    client:
+      id: 1f9bbddcb3e160ab
+      secret: 24bf8caeaa685e2e42d9a75b48511f83adffaf6fcdd174ce8749358a376be911
+    profile:
+      base_url: https://latest.dev.lcip.org/profile/v1
