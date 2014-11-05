@@ -12,9 +12,9 @@
   <tbody>
     <% @pages.each do |page| %>
       <tr>
-        <td><%= page.title %></td>
-        <td><%= page.url %></td>
-        <td><%= image_tag(page.embed_thumbnail_url, style: 'max-width: 150px;') %></td>
+        <td><%= image_tag(page.extracted_favicon_url, width: 16, height: 16) %> <%= page.title %></td>
+        <td style="background-color: <%= page.extracted_favicon_color %>"><%= page.url %></td>
+        <td><%= image_tag(page.extracted_image_url, style: 'max-width: 150px;') if page.extracted_image_url %></td>
         <td><%= link_to 'Show', page %></td>
         <td><%= link_to 'Edit', edit_page_path(page) %></td>
         <td><%= link_to 'Destroy', page, method: :delete, data: { confirm: 'Are you sure?' } %></td>

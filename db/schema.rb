@@ -11,11 +11,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105042102) do
+ActiveRecord::Schema.define(version: 20141105182305) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
+
+  create_table "entities", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "page_id"
+    t.string   "name"
+    t.integer  "count"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "entities", ["name"], name: "index_entities_on_name", using: :btree
+  add_index "entities", ["page_id"], name: "index_entities_on_page_id", using: :btree
+
+  create_table "keywords", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "page_id"
+    t.string   "name"
+    t.float    "score"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "keywords", ["name"], name: "index_keywords_on_name", using: :btree
+  add_index "keywords", ["page_id"], name: "index_keywords_on_page_id", using: :btree
 
   create_table "likes", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
     t.uuid     "user_id"
@@ -29,23 +51,35 @@ ActiveRecord::Schema.define(version: 20141105042102) do
   add_index "likes", ["user_id"], name: "index_likes_on_user_id", using: :btree
 
   create_table "pages", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.string   "url",                    limit: 2048
+    t.string   "url",                        limit: 2048
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "embed_type"
-    t.string   "embed_title"
-    t.string   "embed_url",              limit: 2048
-    t.text     "embed_description"
-    t.string   "embed_provider_url",     limit: 2048
-    t.string   "embed_author_name"
-    t.string   "embed_author_url",       limit: 2048
-    t.string   "embed_thumbnail_url",    limit: 2048
-    t.integer  "embed_thumbnail_width"
-    t.integer  "embed_thumbnail_height"
-    t.string   "embed_provider_name"
-    t.text     "embed_html"
-    t.integer  "embed_height"
-    t.integer  "embed_width"
+    t.string   "extracted_type"
+    t.string   "extracted_title"
+    t.string   "extracted_url",              limit: 2048
+    t.text     "extracted_description"
+    t.string   "extracted_provider_url",     limit: 2048
+    t.string   "extracted_author_name"
+    t.string   "extracted_author_url",       limit: 2048
+    t.string   "extracted_image_url",        limit: 2048
+    t.integer  "extracted_image_width"
+    t.integer  "extracted_image_height"
+    t.text     "extracted_image_caption"
+    t.string   "extracted_image_color"
+    t.string   "extracted_provider_name"
+    t.text     "extracted_html"
+    t.integer  "extracted_height"
+    t.integer  "extracted_width"
+    t.string   "extracted_provider_display"
+    t.boolean  "extracted_safe"
+    t.text     "extracted_content"
+    t.string   "extracted_favicon_url",      limit: 2048
+    t.string   "extracted_favicon_color"
+    t.string   "extracted_language"
+    t.text     "extracted_lead"
+    t.integer  "extracted_cache_age"
+    t.integer  "extracted_offset"
+    t.integer  "extracted_published",        limit: 8
   end
 
   add_index "pages", ["url"], name: "index_pages_on_url", using: :btree

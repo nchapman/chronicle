@@ -37,3 +37,4 @@ gem 'settingslogic'
 gem 'attribute_normalizer'
 gem 'addressable', require: 'addressable/uri'
 gem 'embedly'
+gem 'awesome_print', group: :development
