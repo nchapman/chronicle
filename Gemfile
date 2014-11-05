@@ -35,3 +35,4 @@ gem 'torquebox-server', group: :development
 gem 'rest-client'
 gem 'settingslogic'
 gem 'attribute_normalizer'
+gem 'addressable', require: 'addressable/uri'
