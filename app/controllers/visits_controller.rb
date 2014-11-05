@@ -2,6 +2,9 @@ class VisitsController < ApplicationController
   before_action :set_visit, only: [:show, :edit, :update, :destroy]
   before_action :require_user
 
+  # TODO: There is probably some nice middle ground here
+  skip_before_action :verify_authenticity_token
+
   # GET /visits
   # GET /visits.json
   def index

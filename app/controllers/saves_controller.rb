@@ -2,6 +2,9 @@ class SavesController < ApplicationController
   before_action :set_save, only: [:show, :edit, :update, :destroy]
   before_action :require_user
 
+  # TODO: There is probably some nice middle ground here
+  skip_before_action :verify_authenticity_token
+
   # GET /saves
   # GET /saves.json
   def index
@@ -11,6 +14,12 @@ class SavesController < ApplicationController
   # GET /saves/1
   # GET /saves/1.json
   def show
+  end
+
+  # GET /saves/exists.json?like[url]=http...
+  # TODO: Do something for html requests?
+  def exists
+    render json: current_user.saves.find_by_url(save_params[:url]).exists?
   end
 
   # GET /saves/new
@@ -60,6 +69,15 @@ class SavesController < ApplicationController
       format.html { redirect_to saves_url, notice: 'Save was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # DELETE /saves?like[url]=http...
+  # DELETE /saves.json {like: { url: ... }}
+  def destroy_by_url
+    @save = current_user.saves.find_by_url(save_params[:url]).first
+
+    # Now that we have the right @like, destroy as usual
+    destroy
   end
 
   private

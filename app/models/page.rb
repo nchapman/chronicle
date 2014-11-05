@@ -3,5 +3,5 @@ class Page < ActiveRecord::Base
 
   validates :url, presence: true
 
-  normalize_attribute :url
+  normalize_attribute :url, with: [:strip, :blank]
 end

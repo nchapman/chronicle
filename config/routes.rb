@@ -1,8 +1,20 @@
 Rails.application.routes.draw do
   resources :visits
-  resources :saves
-  resources :likes
+
+  resources :saves do
+    post 'exists', on: :collection
+  end
+  # Support deleting without an id
+  delete 'saves' => 'saves#destroy_by_url'
+
+  resources :likes do
+    post 'exists', on: :collection
+  end
+  # Support deleting without an id
+  delete 'likes' => 'likes#destroy_by_url'
+
   resources :pages
+
   resources :users
 
   get 'auth/sign_in', as: :sign_in

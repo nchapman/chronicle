@@ -2,6 +2,9 @@ class LikesController < ApplicationController
   before_action :set_like, only: [:show, :edit, :update, :destroy]
   before_action :require_user
 
+  # TODO: There is probably some nice middle ground here
+  skip_before_action :verify_authenticity_token
+
   # GET /likes
   # GET /likes.json
   def index
@@ -11,6 +14,12 @@ class LikesController < ApplicationController
   # GET /likes/1
   # GET /likes/1.json
   def show
+  end
+
+  # GET /likes/exists.json?like[url]=http...
+  # TODO: Do something for html requests?
+  def exists
+    render json: current_user.likes.find_by_url(like_params[:url]).exists?
   end
 
   # GET /likes/new
@@ -60,6 +69,15 @@ class LikesController < ApplicationController
       format.html { redirect_to likes_url, notice: 'Like was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  # DELETE /likes?like[url]=http...
+  # DELETE /likes.json {like: { url: ... }}
+  def destroy_by_url
+    @like = current_user.likes.find_by_url(like_params[:url]).first
+
+    # Now that we have the right @like, destroy as usual
+    destroy
   end
 
   private

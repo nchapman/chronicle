@@ -9,6 +9,10 @@ class Like < ActiveRecord::Base
 
   attr_writer :url
 
+  def self.find_by_url(url)
+    joins(:page).where('pages.url' => url)
+  end
+
   # This allows likes to accept a URL during creation but proxy lookups to the associated page
   def url
     @url || (page && page.url)
