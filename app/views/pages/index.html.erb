@@ -3,6 +3,7 @@
 <table>
   <thead>
     <tr>
+      <th>Title</th>
       <th>URL</th>
       <th colspan="3"></th>
     </tr>
@@ -11,7 +12,9 @@
   <tbody>
     <% @pages.each do |page| %>
       <tr>
+        <td><%= page.title %></td>
         <td><%= page.url %></td>
+        <td><%= image_tag(page.embed_thumbnail_url, style: 'max-width: 150px;') %></td>
         <td><%= link_to 'Show', page %></td>
         <td><%= link_to 'Edit', edit_page_path(page) %></td>
         <td><%= link_to 'Destroy', page, method: :delete, data: { confirm: 'Are you sure?' } %></td>
