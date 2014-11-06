@@ -26,5 +26,10 @@ class AddExtractedFieldsToPage < ActiveRecord::Migration
     add_column :pages, :extracted_cache_age, :integer
     add_column :pages, :extracted_offset, :integer
     add_column :pages, :extracted_published, :bigint
+    add_column :pages, :extracted_media_type, :string
+    add_column :pages, :extracted_media_html, :text
+    add_column :pages, :extracted_media_height, :integer
+    add_column :pages, :extracted_media_width, :integer
+    add_column :pages, :extracted_media_duration, :integer
   end
 end

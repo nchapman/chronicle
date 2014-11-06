@@ -1,26 +1,9 @@
-<h1>Listing saves</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Page</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @saves.each do |save| %>
-      <tr>
-        <td><%= save.url %></td>
-        <td><%= link_to 'Show', save %></td>
-        <td><%= link_to 'Edit', edit_save_path(save) %></td>
-        <td><%= link_to 'Destroy', save, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Save', new_save_path %>
+<div class="page-list saves">
+  <% @saves.each do |save| %>
+    <div class="page save">
+      <div class="image" style="background-image: url(<%= save.page.extracted_image_url %>)"></div>
+      <h3 class="title"><%= link_to(save.page.title, save) %></h3>
+      <div class="description"><%= first_sentence(save.page.description) %></div>
+    </div>
+  <% end %>
+</div>

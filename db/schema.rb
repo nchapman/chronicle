@@ -80,6 +80,11 @@ ActiveRecord::Schema.define(version: 20141105182305) do
     t.integer  "extracted_cache_age"
     t.integer  "extracted_offset"
     t.integer  "extracted_published",        limit: 8
+    t.string   "extracted_media_type"
+    t.text     "extracted_media_html"
+    t.integer  "extracted_media_height"
+    t.integer  "extracted_media_width"
+    t.integer  "extracted_media_duration"
   end
 
   add_index "pages", ["url"], name: "index_pages_on_url", using: :btree

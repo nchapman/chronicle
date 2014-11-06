@@ -6,6 +6,9 @@ class Page < ActiveRecord::Base
 
   validates :url, presence: true
 
+  always_background :post_process
+  after_create :post_process
+
   normalize_attribute :url, with: [:strip, :blank] do |value|
     if value
       # Normalize URL to prevent unnecessary duplicates
@@ -13,13 +16,15 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def self.post_process(id)
-    find(id).post_process!
+  def post_process
+    reload
+
+    # TODO: Factor in cache time
+    update_extracted_data! unless extracted_title.present?
   end
 
-  def post_process!
+  def update_extracted_data!
     update_extracted_data
-
     save!
   end
 
@@ -74,6 +79,14 @@ class Page < ActiveRecord::Base
     self.extracted_offset = response.offset
     self.extracted_published = response.published
 
+    if response.media
+      self.extracted_media_type = response.media.type
+      self.extracted_media_html = response.media.html
+      self.extracted_media_height = response.media.height
+      self.extracted_media_width = response.media.width
+      self.extracted_media_duration = response.media.duration
+    end
+
     # Create keywords
     self.keywords.delete_all
 
@@ -103,6 +116,12 @@ class Page < ActiveRecord::Base
 
   def description
     extracted_description
+  end
+
+  def published_at
+    if extracted_published.present?
+      @published_at ||= Time.at(extracted_published / 1000)
+    end
   end
 
   private

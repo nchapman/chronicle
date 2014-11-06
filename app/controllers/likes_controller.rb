@@ -8,7 +8,7 @@ class LikesController < ApplicationController
   # GET /likes
   # GET /likes.json
   def index
-    @likes = current_user.likes.includes(:page)
+    @likes = current_user.likes.includes(:page).order('likes.created_at desc')
   end
 
   # GET /likes/1

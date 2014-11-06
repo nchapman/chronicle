@@ -1,27 +1,9 @@
-<h1>Listing likes</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>URL</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @likes.each do |like| %>
-      <tr>
-        <td><%= like.title %></td>
-        <td><%= like.url %></td>
-        <td><%= link_to 'Show', like %></td>
-        <td><%= link_to 'Edit', edit_like_path(like) %></td>
-        <td><%= link_to 'Destroy', like, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Like', new_like_path %>
+<div class="page-list likes">
+  <% @likes.each do |like| %>
+    <div class="page like">
+      <div class="image" style="background-image: url(<%= like.page.extracted_image_url %>)"></div>
+      <h3 class="title"><%= link_to(like.page.title, like.page.url) %></h3>
+      <div class="description"><%= first_sentence(like.page.description) %></div>
+    </div>
+  <% end %>
+</div>
