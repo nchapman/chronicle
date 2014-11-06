@@ -1,0 +1,9 @@
+<div class="page">
+  <div class="image" style="background-image: url(<%= page.extracted_image_url %>)"></div>
+  <h3 class="title"><%= link_to(truncate(page.title || page.url, length: 100), title_url) %></h3>
+  <div class="provider">
+    <%= image_tag page.extracted_favicon_url, width: 16, height: 16 %>
+    <span class="name"><%= page.extracted_provider_display %></span>
+  </div>
+  <div class="description"><%= first_sentence(page.description) %></div>
+</div>

@@ -1,9 +1,5 @@
-<div class="page-list saves">
+<div class="page-grid saves">
   <% @saves.each do |save| %>
-    <div class="page save">
-      <div class="image" style="background-image: url(<%= save.page.extracted_image_url %>)"></div>
-      <h3 class="title"><%= link_to(save.page.title, save) %></h3>
-      <div class="description"><%= first_sentence(save.page.description) %></div>
-    </div>
+    <%= render partial: 'pages/item', locals: { title_url: save_path(save), page: save.page } %>
   <% end %>
 </div>

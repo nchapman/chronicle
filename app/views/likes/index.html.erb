@@ -1,9 +1,5 @@
-<div class="page-list likes">
+<div class="page-grid likes">
   <% @likes.each do |like| %>
-    <div class="page like">
-      <div class="image" style="background-image: url(<%= like.page.extracted_image_url %>)"></div>
-      <h3 class="title"><%= link_to(like.page.title, like.page.url) %></h3>
-      <div class="description"><%= first_sentence(like.page.description) %></div>
-    </div>
+    <%= render partial: 'pages/item', locals: { title_url: like_path(like), page: like.page } %>
   <% end %>
 </div>

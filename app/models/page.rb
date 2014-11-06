@@ -7,12 +7,18 @@ class Page < ActiveRecord::Base
   validates :url, presence: true
 
   always_background :post_process
-  after_create :post_process
+  after_commit :post_process, on: :create
 
   normalize_attribute :url, with: [:strip, :blank] do |value|
     if value
       # Normalize URL to prevent unnecessary duplicates
       Addressable::URI.parse(value).normalize.to_s
+    end
+  end
+
+  def self.update_all_extracted_data
+    Page.where('extracted_title IS NULL').each do |page|
+      page.update_extracted_data!
     end
   end
 
@@ -24,8 +30,11 @@ class Page < ActiveRecord::Base
   end
 
   def update_extracted_data!
-    update_extracted_data
-    save!
+    # TODO: Where is the right place to check for this?
+    unless url =~ /localhost/
+      update_extracted_data
+      save!
+    end
   end
 
   def update_extracted_data
