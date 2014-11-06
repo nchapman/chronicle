@@ -11,7 +11,7 @@
       <span class="author">By <span class="name"><%= @save.page.extracted_author_name %></span></span>
     <% end %>
     <% if @save.page.published_at %>
-      <span class="published-at"><%= @save.page.published_at.strftime('%D') %></span>
+      <span class="published-at"><%= @save.page.published_at.strftime('%b. %-d, %Y') %></span>
     <% end %>
     <%= link_to 'View Original', @save.page.url, class: 'view-original' %>
   </div>
