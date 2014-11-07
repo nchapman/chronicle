@@ -45,6 +45,9 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.8.0)
+    dotenv (1.0.2)
+    dotenv-rails (1.0.2)
+      dotenv (= 1.0.2)
     edn (1.0.0)
       parslet (~> 1.4.0)
     embedly (1.9.1)
@@ -175,6 +178,7 @@ DEPENDENCIES
   attribute_normalizer
   awesome_print
   coffee-rails (~> 4.0.0)
+  dotenv-rails
   embedly
   jbuilder (~> 2.0)
   jquery-rails

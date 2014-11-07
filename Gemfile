@@ -38,3 +38,4 @@ gem 'attribute_normalizer'
 gem 'addressable', require: 'addressable/uri'
 gem 'embedly'
 gem 'awesome_print', group: :development
+gem 'dotenv-rails', groups: [:development, :test]

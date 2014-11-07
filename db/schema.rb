@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141105182305) do
+ActiveRecord::Schema.define(version: 20141107000427) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,7 @@ ActiveRecord::Schema.define(version: 20141105182305) do
     t.integer  "extracted_media_height"
     t.integer  "extracted_media_width"
     t.integer  "extracted_media_duration"
+    t.float    "extracted_image_entropy"
   end
 
   add_index "pages", ["url"], name: "index_pages_on_url", using: :btree

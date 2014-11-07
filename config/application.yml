@@ -6,3 +6,8 @@ development:
       secret: 24bf8caeaa685e2e42d9a75b48511f83adffaf6fcdd174ce8749358a376be911
     profile:
       base_url: https://latest.dev.lcip.org/profile/v1
+  url2png:
+    api_key: <%= ENV['URL2PNG_API_KEY'] %>
+    secret_key: <%= ENV['URL2PNG_SECRET_KEY'] %>
+  embedly:
+    key: <%= ENV['EMBEDLY_KEY'] %>

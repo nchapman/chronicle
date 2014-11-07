@@ -39,6 +39,7 @@ module Extraction
       self.extracted_image_width = image['width']
       self.extracted_image_height = image['height']
       self.extracted_image_caption = image['caption']
+      self.extracted_image_entropy = image['entropy']
 
       # Get first extracted image color
       if image['colors'] && (image_color = image['colors'].first)
@@ -100,6 +101,6 @@ module Extraction
   private
 
     def embedly
-      @embedly ||= Embedly::API.new(key: 'b5aee68e026a443d9bafdbf6f4694cd5')
+      @embedly ||= Embedly::API.new(key: Settings.embedly.key)
     end
 end
