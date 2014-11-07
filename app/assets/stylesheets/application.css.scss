@@ -202,7 +202,6 @@ a {
 
   .page-details {
     margin: 0 auto;
-    max-width: 650px;
 
     .provider {
       color: #888;
@@ -253,7 +252,17 @@ a {
     }
 
     .media {
-      iframe {
+      height: 0;
+      margin: 10px 0;
+      overflow: hidden;
+      position: relative;
+      padding-bottom: 67.5%;
+
+      iframe, object, embed {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
         width: 100%;
       }
     }

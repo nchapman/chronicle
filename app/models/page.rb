@@ -26,6 +26,8 @@ class Page < ActiveRecord::Base
   alias_attribute :media_type, :extracted_media_type
   alias_attribute :media_html, :extracted_media_html
   alias_attribute :content, :extracted_content
+  alias_attribute :media_height, :extracted_media_height
+  alias_attribute :media_width, :extracted_media_width
 
   # Clean up and normalize the URL
   normalize_attribute :url, with: [:strip, :blank] do |value|
@@ -63,6 +65,14 @@ class Page < ActiveRecord::Base
 
   def screenshot_url
     @screenshot_url ||= build_url2png_url
+  end
+
+  def watchable?
+    extracted_media_type == 'video'
+  end
+
+  def media_size_ratio
+    media_height.to_f / media_width.to_f
   end
 
   private
