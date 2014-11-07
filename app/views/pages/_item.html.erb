@@ -1,7 +1,7 @@
 <div class="page">
   <div class="provider">
-    <%= image_tag page.extracted_favicon_url, width: 16, height: 16 %>
-    <%= link_to page.extracted_provider_name, page.extracted_provider_url, class: 'name' %> <span class="author"><%= page.extracted_author_name %></span>
+    <%= image_tag page.favicon_url, width: 16, height: 16 %>
+    <%= link_to page.provider_name, page.provider_url, class: 'name' %> <span class="author"><%= page.author_name %></span>
   </div>
   <div class="image" style="background-image: url(<%= page.image_url %>)"></div>
   <h3 class="title"><%= link_to(truncate(page.title || page.url, length: 90), title_url) %></h3>

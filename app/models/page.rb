@@ -16,6 +16,17 @@ class Page < ActiveRecord::Base
 
   always_background :post_process
 
+  # Alias the extracted attributes
+  alias_attribute :title, :extracted_title
+  alias_attribute :favicon_url, :extracted_favicon_url
+  alias_attribute :provider_display, :extracted_provider_display
+  alias_attribute :provider_name, :extracted_provider_name
+  alias_attribute :provider_url, :extracted_provider_url
+  alias_attribute :author_name, :extracted_author_name
+  alias_attribute :media_type, :extracted_media_type
+  alias_attribute :media_html, :extracted_media_html
+  alias_attribute :content, :extracted_content
+
   # Clean up and normalize the URL
   normalize_attribute :url, with: [:strip, :blank] do |value|
     if value
@@ -32,20 +43,16 @@ class Page < ActiveRecord::Base
     update_extracted_data!
   end
 
-  def title
-    extracted_title
-  end
-
-  def description
-    extracted_description
-  end
-
   def image_url
     if extracted_image_url && extracted_image_entropy && extracted_image_entropy > MINIMUM_IMAGE_ENTROPY && !(url =~ FORCE_SCREENSHOT_PATTERN)
       extracted_image_url
     else
       screenshot_url
     end
+  end
+
+  def description
+    extracted_lead || extracted_description
   end
 
   def published_at
@@ -58,10 +65,12 @@ class Page < ActiveRecord::Base
     @screenshot_url ||= build_url2png_url
   end
 
-  def build_url2png_url(max_width = 500)
-    query_string = "?url=#{CGI.escape(url)}&viewport=1280x800&thumbnail_max_width=#{max_width}"
-    token = Digest::MD5.hexdigest("#{query_string}#{Settings.url2png.secret_key}")
+  private
 
-    "http://api.url2png.com/v6/#{Settings.url2png.api_key}/#{token}/png/#{query_string}"
-  end
+    def build_url2png_url(max_width = 500)
+      query_string = "?url=#{CGI.escape(url)}&viewport=1280x800&thumbnail_max_width=#{max_width}"
+      token = Digest::MD5.hexdigest("#{query_string}#{Settings.url2png.secret_key}")
+
+      "http://api.url2png.com/v6/#{Settings.url2png.api_key}/#{token}/png/#{query_string}"
+    end
 end
