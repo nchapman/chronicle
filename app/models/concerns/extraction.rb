@@ -1,23 +1,28 @@
 module Extraction
   extend ActiveSupport::Concern
 
-  def self.update_all_extracted_data
-    Page.where('extracted_title IS NULL').each do |page|
-      page.update_extracted_data!
+  module ClassMethods
+    def update_all_extracted_data
+      Page.where('extracted_title IS NULL').each do |page|
+        page.update_extracted_data!
+      end
     end
+  end
+
+  # TODO: This should eventually consider cache time
+  def should_update_extracted_data?
+    !(url =~ /localhost/) && extracted_title.blank?
   end
 
   def update_extracted_data!
-    # TODO: Where is the right place to check for this?
-    unless url =~ /localhost/
-      update_extracted_data
-      save!
-    end
+    update_extracted_data
+    save! if changed?
   end
 
   def update_extracted_data
-    # TODO: replace this with a more permanent solution
-    return if url =~ /localhost/
+    return unless should_update_extracted_data?
+
+    Rails.logger.info('Fetching extracted data from embedly')
 
     response = embedly.extract(url: url).first
 
@@ -75,14 +80,14 @@ module Extraction
       self.extracted_media_duration = response.media.duration
     end
 
-    # Create keywords
+    # Create keywords, but get rid of them all first
     self.keywords.delete_all
 
     response.keywords.each do |k|
       self.keywords.create!(name: k['name'], score: k['score'])
     end
 
-    # Create entities
+    # Create entities, but get rid of them all first
     self.entities.delete_all
 
     response.entities.each do |e|
@@ -90,15 +95,15 @@ module Extraction
     end
   end
 
-  def rgb_to_hex(rgb_array)
-    hex = ''
-
-    rgb_array.each { |n| hex += n.to_s(16).rjust(2, '0') }
-
-    "##{hex}"
-  end
-
   private
+
+    def rgb_to_hex(rgb_array)
+      hex = ''
+
+      rgb_array.each { |n| hex += n.to_s(16).rjust(2, '0') }
+
+      "##{hex}"
+    end
 
     def embedly
       @embedly ||= Embedly::API.new(key: Settings.embedly.key)

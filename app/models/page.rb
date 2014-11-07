@@ -11,9 +11,12 @@ class Page < ActiveRecord::Base
 
   validates :url, presence: true
 
-  after_commit :post_process, on: :create
+  # This seems hacky but is reliable
+  after_commit :post_process, if: Proc.new { previous_changes[:id] }
+
   always_background :post_process
 
+  # Clean up and normalize the URL
   normalize_attribute :url, with: [:strip, :blank] do |value|
     if value
       # Normalize URL to prevent unnecessary duplicates
@@ -22,10 +25,11 @@ class Page < ActiveRecord::Base
   end
 
   def post_process
+    Rails.logger.info('Post processing page: ' + url)
+    # Make sure we have the latest
     reload
 
-    # TODO: Factor in cache time
-    update_extracted_data! unless extracted_title.present?
+    update_extracted_data!
   end
 
   def title
