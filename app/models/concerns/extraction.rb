@@ -3,7 +3,7 @@ module Extraction
 
   module ClassMethods
     def update_all_extracted_data
-      Page.where('extracted_title IS NULL').each do |page|
+      Page.where('extracted_at IS NULL').each do |page|
         page.update_extracted_data!
       end
     end
@@ -11,7 +11,7 @@ module Extraction
 
   # TODO: This should eventually consider cache time
   def should_update_extracted_data?
-    !(url =~ /localhost/) && extracted_title.blank?
+    !(url =~ /localhost/) && extracted_at.nil?
   end
 
   def update_extracted_data!
@@ -93,6 +93,8 @@ module Extraction
     response.entities.each do |e|
       self.entities.create!(name: e['name'], count: e['count'])
     end
+
+    self.extracted_at = Time.now
   end
 
   private
