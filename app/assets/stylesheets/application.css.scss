@@ -54,7 +54,7 @@ a {
           margin-right: 16px;
 
           a {
-            color: #777;
+            color: #888;
             font-size: 14px;
             font-weight: 300;
             letter-spacing: 0.6px;
@@ -64,6 +64,11 @@ a {
             &:hover {
               color: #FF9500;
             }
+          }
+
+          &.current a {
+            color: #000;
+            font-weight: normal;
           }
         }
       }
