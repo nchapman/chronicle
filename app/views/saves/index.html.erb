@@ -3,3 +3,5 @@
     <%= render partial: 'pages/item', locals: { title_url: save_path(save), page: save.page } %>
   <% end %>
 </div>
+
+<%= will_paginate @saves %>

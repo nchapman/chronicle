@@ -3,3 +3,5 @@
     <%= render partial: 'pages/item', locals: { title_url: like_path(like), page: like.page } %>
   <% end %>
 </div>
+
+<%= will_paginate @likes %>

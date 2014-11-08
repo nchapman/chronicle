@@ -8,7 +8,7 @@ class SavesController < ApplicationController
   # GET /saves
   # GET /saves.json
   def index
-    @saves = current_user.saves.includes(:page).order('saves.created_at desc')
+    @saves = current_user.saves.includes(:page).order('saves.created_at desc').page(params[:page])
   end
 
   # GET /saves/1

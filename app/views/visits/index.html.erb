@@ -1,12 +1,12 @@
 <div class="page-list">
   <% current_date = nil %>
   <% @visits.each do |visit| %>
-    <% unless visit.page.url =~ /localhost/ %>
-      <% if current_date != visit.created_at.to_date %>
-        <% current_date = visit.created_at.to_date %>
-        <h2 class="date-divider"><%= current_date.strftime('%B %-d, %Y') %></h2>
-      <% end %>
-      <%= render partial: 'pages/item', locals: { title_url: visit.page.url, page: visit.page } %>
+    <% if current_date != visit.created_at.to_date %>
+      <% current_date = visit.created_at.to_date %>
+      <h2 class="date-divider"><%= current_date.strftime('%B %-d, %Y') %></h2>
     <% end %>
+    <%= render partial: 'pages/item', locals: { title_url: visit.page.url, page: visit.page } %>
   <% end %>
 </div>
+
+<%= will_paginate @visits %>

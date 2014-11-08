@@ -293,4 +293,31 @@ a {
       }
     }
   }
+
+  .pagination {
+    clear: both;
+    margin: 20px 0;
+    text-align: center;
+
+    > * {
+      padding-right: 5px;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
+
+    em {
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    .disabled {
+      color: #aaa;
+    }
+
+    a {
+      text-decoration: none;
+    }
+  }
 }

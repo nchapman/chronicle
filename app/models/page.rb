@@ -1,19 +1,24 @@
 class Page < ActiveRecord::Base
   include Extraction
 
+  # Constants
   MINIMUM_IMAGE_ENTROPY = 1.75
-  FORCE_SCREENSHOT_PATTERN = /github.com|(\..{2,3}\/$)/
+  EXTRACTED_IMAGE_DENY_PATTERN = /github.com|(\..{2,3}\/$)/
+  SCREENSHOT_DENY_PATTERN = /localhost/
 
+  # Relationships
   has_many :likes
   has_many :saves
   has_many :keywords
   has_many :entities
 
+  # Validations
   validates :url, presence: true
 
   # This seems hacky but is reliable
   after_commit :post_process, if: Proc.new { previous_changes[:id] }
 
+  # Always enqueue these methods to run in the background
   always_background :post_process
 
   # Alias the extracted attributes
@@ -37,6 +42,7 @@ class Page < ActiveRecord::Base
     end
   end
 
+  # Gather meta data for this page
   def post_process
     Rails.logger.info('Post processing page: ' + url)
     # Make sure we have the latest
@@ -46,9 +52,9 @@ class Page < ActiveRecord::Base
   end
 
   def image_url
-    if extracted_image_url && extracted_image_entropy && extracted_image_entropy > MINIMUM_IMAGE_ENTROPY && !(url =~ FORCE_SCREENSHOT_PATTERN)
+    if valid_extracted_image_url?
       extracted_image_url
-    else
+    elsif valid_screenshot_url?
       screenshot_url
     end
   end
@@ -76,6 +82,17 @@ class Page < ActiveRecord::Base
   end
 
   private
+
+    def valid_extracted_image_url?
+      extracted_image_url &&
+      extracted_image_entropy &&
+      extracted_image_entropy > MINIMUM_IMAGE_ENTROPY &&
+      !(url =~ EXTRACTED_IMAGE_DENY_PATTERN)
+    end
+
+    def valid_screenshot_url?
+      !(url =~ SCREENSHOT_DENY_PATTERN)
+    end
 
     def build_url2png_url(max_width = 500)
       query_string = "?url=#{CGI.escape(url)}&viewport=1280x800&thumbnail_max_width=#{max_width}"
