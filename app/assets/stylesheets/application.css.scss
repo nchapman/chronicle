@@ -1,3 +1,5 @@
+@import 'bourbon';
+@import 'neat';
 @import 'lib/normalize';
 @import 'fonts';
 
@@ -89,15 +91,12 @@ a {
   }
 
   .page-grid {
-    .page {
-      float: left;
-      height: 410px;
-      margin-right: 25px;
-      width: 284px;
+    @include outer-container;
 
-      &:last-child {
-        margin-right: 0;
-      }
+    .page {
+      @include span-columns(4);
+      @include omega(3n);
+      height: 410px;
 
       .provider {
         color: #444;
