@@ -11,6 +11,7 @@ class Page < ActiveRecord::Base
   has_many :saves
   has_many :keywords
   has_many :entities
+  has_many :extracted_recommendations
 
   # Validations
   validates :url, presence: true
@@ -35,10 +36,22 @@ class Page < ActiveRecord::Base
   alias_attribute :media_width, :extracted_media_width
 
   # Clean up and normalize the URL
-  normalize_attribute :url, with: [:strip, :blank] do |value|
-    if value
-      # Normalize URL to prevent unnecessary duplicates
-      Addressable::URI.parse(value).normalize.to_s
+  normalize_attribute :url do |value|
+    Page.normalize_url(value)
+  end
+
+  def self.first_or_create_by_url(url, should_extract_recommendations = false)
+    page = where(url: normalize_url(url)).first_or_initialize
+    page.should_extract_recommendations = should_extract_recommendations
+
+    page.save
+
+    page
+  end
+
+  def self.normalize_url(url)
+    if url
+      Addressable::URI.parse(url.strip).normalize.to_s
     end
   end
 

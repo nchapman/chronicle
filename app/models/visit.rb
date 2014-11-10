@@ -15,6 +15,6 @@ class Visit < ActiveRecord::Base
   end
 
   def assign_page
-    self.page = Page.where(url: @url).first_or_create
+    self.page = Page.first_or_create_by_url(@url)
   end
 end

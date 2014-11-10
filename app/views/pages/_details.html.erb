@@ -25,4 +25,13 @@
       <%= page.content.html_safe %>
     </div>
   <% end %>
+
+  <h3>Recommended</h3>
+  <ul class="extracted-recommendations">
+    <% page.extracted_recommendations.each do |recommendation| %>
+      <% if recommendation.recommended_page.title.present? %>
+        <li><%= link_to recommendation.recommended_page.title, recommendation.recommended_page.url %></li>
+      <% end %>
+    <% end %>
+  </ul>
 </div>

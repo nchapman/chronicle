@@ -80,20 +80,36 @@ module Extraction
       self.extracted_media_duration = response.media.duration
     end
 
-    # Create keywords, but get rid of them all first
+    # Create keywords, but get rid of old ones first
     self.keywords.delete_all
 
-    response.keywords.each do |k|
-      self.keywords.create!(name: k['name'], score: k['score'])
+    if response.keywords
+      response.keywords.each do |k|
+        self.keywords.create!(name: k['name'], score: k['score'])
+      end
     end
 
-    # Create entities, but get rid of them all first
+    # Create entities, but get rid of old ones first
     self.entities.delete_all
 
-    response.entities.each do |e|
-      self.entities.create!(name: e['name'], count: e['count'])
+    if response.entities
+      response.entities.each do |e|
+        self.entities.create!(name: e['name'], count: e['count'])
+      end
     end
 
+    # Create recommendations, but get rid of old ones first
+    if self.should_extract_recommendations
+      self.extracted_recommendations.delete_all
+
+      if response.related
+        response.related.each do |r|
+          self.extracted_recommendations.create!(page_id: self.id, recommended_page_id: Page.first_or_create_by_url(r['url']).id, score: r['score'])
+        end
+      end
+    end
+
+    # Update the extracted_at time
     self.extracted_at = Time.now
   end
 
