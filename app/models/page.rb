@@ -15,7 +15,7 @@ class Page < ActiveRecord::Base
   validates :url, presence: true
 
   # This seems hacky but is reliable
-  after_commit :post_process, if: Proc.new { previous_changes[:id] }
+  after_commit :enqueue_post_process, if: Proc.new { previous_changes[:id] }
 
   # Alias the extracted attributes
   alias_attribute :title, :extracted_title
@@ -45,11 +45,13 @@ class Page < ActiveRecord::Base
     find_or_create_by(url: url)
   end
 
+  def enqueue_post_process
+    PagePostProcessorJob.perform_later(self)
+  end
+
   # Gather meta data for this page
-  def post_process
+  def post_process!
     Rails.logger.info('Post processing page: ' + url)
-    # Make sure we have the latest
-    reload
 
     update_extracted_data!
   end
