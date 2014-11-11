@@ -5,6 +5,7 @@ class UserPage < ActiveRecord::Base
   validates :user, presence: true
 
   before_create :assign_page
+  before_save :update_status_times
 
   attr_writer :url
 
@@ -35,8 +36,20 @@ class UserPage < ActiveRecord::Base
     user_page
   end
 
+  delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,
+           :media_html, :content, :media_height, :media_width, :image_url, :summary, :published_at,
+           to: :page
+
+  def title
+    self[:title] || page.andand.title
+  end
+
+  def description
+    self[:description] || summary
+  end
+
   def url
-    @url || (page && page.url)
+    @url || page.andand.url
   end
 
   def mark_liked!
@@ -59,5 +72,19 @@ class UserPage < ActiveRecord::Base
 
     def assign_page
       self.page = Page.find_or_create_by_url(@url)
+    end
+
+    def update_status_times
+      if saved_changed?
+        self.saved_at = self.saved ? Time.now : nil
+      end
+
+      if liked_changed?
+        self.liked_at = self.liked ? Time.now : nil
+      end
+
+      if read_changed?
+        self.read_at = self.read ? Time.now : nil
+      end
     end
 end

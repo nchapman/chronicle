@@ -6,5 +6,5 @@
   </div>
   <div class="image" style="background-image: url(<%= page.image_url %>)"></div>
   <h3 class="title"><%= link_to(truncate(page.title || page.url, length: 90), title_url) %></h3>
-  <div class="description"><%= first_sentence(page.description) %></div>
+  <div class="description"><%= first_sentence(page.summary) %></div>
 </div>

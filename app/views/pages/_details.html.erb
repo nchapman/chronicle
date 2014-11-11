@@ -16,7 +16,7 @@
     <%= link_to 'View Original', page.url, class: 'view-original' %>
   </div>
   <% if page.watchable? %>
-    <p class="description"><%= page.description %></p>
+    <p class="description"><%= page.summary %></p>
     <div class="media" style="padding-bottom: <%= "#{page.media_size_ratio * 100}%" %>">
       <%= page.media_html.html_safe %>
     </div>

@@ -1,7 +1,7 @@
 <div class="page-grid likes">
-  <% @likes.each do |like| %>
-    <%= render partial: 'pages/item', locals: { title_url: like_path(like), page: like.page } %>
+  <% @user_pages.each do |user_page| %>
+    <%= render partial: 'pages/item', locals: { title_url: like_path(user_page), page: user_page.page } %>
   <% end %>
 </div>
 
-<%= will_paginate @likes %>
+<%= will_paginate @user_pages %>

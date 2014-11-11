@@ -62,7 +62,7 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def description
+  def summary
     extracted_lead || extracted_description
   end
 

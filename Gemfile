@@ -16,6 +16,9 @@ gem 'embedly'
 gem 'will_paginate'
 gem 'bourbon'
 gem 'neat'
+gem 'responders', '~> 2.0'
+gem 'active_model_serializers', git: 'https://github.com/rails-api/active_model_serializers.git'
+gem 'andand'
 
 group :development, :test do
   gem 'byebug'

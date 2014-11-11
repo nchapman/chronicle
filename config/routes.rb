@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :user_pages
   resources :visits
   resources :pages
   resources :users
