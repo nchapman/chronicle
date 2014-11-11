@@ -7,19 +7,15 @@ class Page < ActiveRecord::Base
   SCREENSHOT_DENY_PATTERN = /localhost/
 
   # Relationships
-  has_many :likes
-  has_many :saves
-  has_many :keywords
-  has_many :entities
+  has_many :extracted_keywords
+  has_many :extracted_entities
+  has_many :user_pages
 
   # Validations
   validates :url, presence: true
 
   # This seems hacky but is reliable
   after_commit :post_process, if: Proc.new { previous_changes[:id] }
-
-  # Always enqueue these methods to run in the background
-  always_background :post_process
 
   # Alias the extracted attributes
   alias_attribute :title, :extracted_title
@@ -35,11 +31,18 @@ class Page < ActiveRecord::Base
   alias_attribute :media_width, :extracted_media_width
 
   # Clean up and normalize the URL
-  normalize_attribute :url, with: [:strip, :blank] do |value|
-    if value
-      # Normalize URL to prevent unnecessary duplicates
-      Addressable::URI.parse(value).normalize.to_s
+  normalize_attribute :url do |value|
+    Page.normalize_url(value)
+  end
+
+  def self.normalize_url(url)
+    if url.present?
+      Addressable::URI.parse(url.strip).normalize.to_s
     end
+  end
+
+  def self.find_or_create_by_url(url)
+    find_or_create_by(url: url)
   end
 
   # Gather meta data for this page
@@ -96,8 +99,8 @@ class Page < ActiveRecord::Base
 
     def build_url2png_url(max_width = 500)
       query_string = "?url=#{CGI.escape(url)}&viewport=1280x800&thumbnail_max_width=#{max_width}"
-      token = Digest::MD5.hexdigest("#{query_string}#{Settings.url2png.secret_key}")
+      token = Digest::MD5.hexdigest("#{query_string}#{AppConfig.url2png.secret_key}")
 
-      "http://api.url2png.com/v6/#{Settings.url2png.api_key}/#{token}/png/#{query_string}"
+      "http://api.url2png.com/v6/#{AppConfig.url2png.api_key}/#{token}/png/#{query_string}"
     end
 end

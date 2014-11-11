@@ -5,7 +5,7 @@
       <% current_date = visit.created_at.to_date %>
       <h2 class="date-divider"><%= current_date.strftime('%B %-d, %Y') %></h2>
     <% end %>
-    <%= render partial: 'pages/item', locals: { title_url: visit.page.url, page: visit.page } %>
+    <%= render partial: 'pages/item', locals: { title_url: visit.user_page.page.url, page: visit.user_page.page } %>
   <% end %>
 </div>
 

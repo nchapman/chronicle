@@ -1,10 +1,11 @@
-<h1>Listing pages</h1>
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Pages</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Title</th>
-      <th>URL</th>
+      <th>Url</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -12,9 +13,7 @@
   <tbody>
     <% @pages.each do |page| %>
       <tr>
-        <td><%= image_tag(page.extracted_favicon_url, width: 16, height: 16) %> <%= page.title %></td>
-        <td style="background-color: <%= page.extracted_favicon_color %>"><%= page.url %></td>
-        <td><%= image_tag(page.extracted_image_url, style: 'max-width: 150px;') if page.extracted_image_url %></td>
+        <td><%= page.url %></td>
         <td><%= link_to 'Show', page %></td>
         <td><%= link_to 'Edit', edit_page_path(page) %></td>
         <td><%= link_to 'Destroy', page, method: :delete, data: { confirm: 'Are you sure?' } %></td>

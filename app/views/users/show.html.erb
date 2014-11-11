@@ -1,8 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Fxa:</strong>
-  <%= @user.fxa_id %>
+  <strong>Fxa uid:</strong>
+  <%= @user.fxa_uid %>
 </p>
 
 <p>
@@ -23,6 +23,11 @@
 <p>
   <strong>Oauth token:</strong>
   <%= @user.oauth_token %>
+</p>
+
+<p>
+  <strong>Oauth token type:</strong>
+  <%= @user.oauth_token_type %>
 </p>
 
 <%= link_to 'Edit', edit_user_path(@user) %> |

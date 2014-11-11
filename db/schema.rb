@@ -11,49 +11,30 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141108001645) do
+ActiveRecord::Schema.define(version: 20141111035815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "uuid-ossp"
 
-  create_table "entities", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.uuid     "page_id"
+  create_table "extracted_entities", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "page_id",    null: false
     t.string   "name"
     t.integer  "count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  add_index "entities", ["name"], name: "index_entities_on_name", using: :btree
-  add_index "entities", ["page_id"], name: "index_entities_on_page_id", using: :btree
-
-  create_table "keywords", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.uuid     "page_id"
+  create_table "extracted_keywords", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "page_id",    null: false
     t.string   "name"
     t.float    "score"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
-
-  add_index "keywords", ["name"], name: "index_keywords_on_name", using: :btree
-  add_index "keywords", ["page_id"], name: "index_keywords_on_page_id", using: :btree
-
-  create_table "likes", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.uuid     "user_id"
-    t.uuid     "page_id"
-    t.string   "title"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  add_index "likes", ["page_id"], name: "index_likes_on_page_id", using: :btree
-  add_index "likes", ["user_id"], name: "index_likes_on_user_id", using: :btree
 
   create_table "pages", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.string   "url",                        limit: 2048
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "url",                                     null: false
     t.string   "extracted_type"
     t.string   "extracted_title"
     t.string   "extracted_url",              limit: 2048
@@ -64,6 +45,7 @@ ActiveRecord::Schema.define(version: 20141108001645) do
     t.string   "extracted_image_url",        limit: 2048
     t.integer  "extracted_image_width"
     t.integer  "extracted_image_height"
+    t.float    "extracted_image_entropy"
     t.text     "extracted_image_caption"
     t.string   "extracted_image_color"
     t.string   "extracted_provider_name"
@@ -85,43 +67,52 @@ ActiveRecord::Schema.define(version: 20141108001645) do
     t.integer  "extracted_media_height"
     t.integer  "extracted_media_width"
     t.integer  "extracted_media_duration"
-    t.float    "extracted_image_entropy"
     t.datetime "extracted_at"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
-  add_index "pages", ["url"], name: "index_pages_on_url", using: :btree
+  add_index "pages", ["url"], name: "index_pages_on_url", unique: true, using: :btree
 
-  create_table "saves", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.uuid     "user_id"
-    t.uuid     "page_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+  create_table "user_pages", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
+    t.uuid     "user_id",     null: false
+    t.uuid     "page_id",     null: false
+    t.string   "title"
+    t.text     "description"
+    t.boolean  "saved"
+    t.boolean  "liked"
+    t.boolean  "read"
+    t.datetime "saved_at"
+    t.datetime "liked_at"
+    t.datetime "read_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
-
-  add_index "saves", ["page_id"], name: "index_saves_on_page_id", using: :btree
-  add_index "saves", ["user_id"], name: "index_saves_on_user_id", using: :btree
 
   create_table "users", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.string   "fxa_id"
-    t.string   "email"
+    t.string   "fxa_uid",          null: false
+    t.string   "email",            null: false
     t.string   "name"
     t.text     "description"
-    t.string   "oauth_token"
-    t.string   "oauth_token_type"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.string   "oauth_token",      null: false
+    t.string   "oauth_token_type", null: false
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
-  add_index "users", ["fxa_id"], name: "index_users_on_fxa_id", unique: true, using: :btree
+  add_index "users", ["fxa_uid"], name: "index_users_on_fxa_uid", unique: true, using: :btree
 
   create_table "visits", id: :uuid, default: "uuid_generate_v4()", force: true do |t|
-    t.uuid     "user_id"
-    t.uuid     "page_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.uuid     "user_id",      null: false
+    t.uuid     "user_page_id", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
-  add_index "visits", ["page_id"], name: "index_visits_on_page_id", using: :btree
-  add_index "visits", ["user_id"], name: "index_visits_on_user_id", using: :btree
-
+  add_foreign_key "extracted_entities", "pages"
+  add_foreign_key "extracted_keywords", "pages"
+  add_foreign_key "user_pages", "pages"
+  add_foreign_key "user_pages", "users"
+  add_foreign_key "visits", "user_pages"
+  add_foreign_key "visits", "users"
 end

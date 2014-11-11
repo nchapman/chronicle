@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   resources :visits
+  resources :pages
+  resources :users
 
   resources :saves do
     post 'exists', on: :collection
@@ -13,16 +15,13 @@ Rails.application.routes.draw do
   # Support deleting without an id
   delete 'likes' => 'likes#destroy_by_url'
 
-  resources :pages
-
-  resources :users
-
-  get 'auth/sign_in', as: :sign_in
-  get 'auth/complete'
-  delete 'auth/sign_out', as: :sign_out
+  namespace :auth do
+    get :sign_in
+    get :complete
+    delete :sign_out
+  end
 
   root 'home#index'
-
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

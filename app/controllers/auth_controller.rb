@@ -23,7 +23,7 @@ class AuthController < ApplicationController
       profile = fetch_profile(oauth_token, oauth_token_type)
 
       # Lookup the user by fxa uid
-      user = User.where(fxa_id: profile['uid']).first_or_initialize
+      user = User.where(fxa_uid: profile['uid']).first_or_initialize
 
       user.email = profile['email']
       user.oauth_token = oauth_token
@@ -47,17 +47,17 @@ class AuthController < ApplicationController
   private
 
     def get_oauth_redirect_url(state, action)
-      "#{Settings.oauth.base_url}/authorization?client_id=#{Settings.oauth.client.id}&state=#{state}&action=#{action}&scope=profile"
+      "#{AppConfig.oauth.base_url}/authorization?client_id=#{AppConfig.oauth.client.id}&state=#{state}&action=#{action}&scope=profile"
     end
 
     def fetch_token(code)
-      response = RestClient.post("#{Settings.oauth.base_url}/token", { client_id: Settings.oauth.client.id, client_secret: Settings.oauth.client.secret, code: code }.to_json, content_type: :json)
+      response = RestClient.post("#{AppConfig.oauth.base_url}/token", { client_id: AppConfig.oauth.client.id, client_secret: AppConfig.oauth.client.secret, code: code }.to_json, content_type: :json)
 
       JSON.parse(response)
     end
 
     def fetch_profile(oauth_token, oauth_token_type)
-      response = RestClient.get("#{Settings.oauth.profile.base_url}/profile", authorization: "#{oauth_token_type.capitalize} #{oauth_token}")
+      response = RestClient.get("#{AppConfig.oauth.profile.base_url}/profile", authorization: "#{oauth_token_type.capitalize} #{oauth_token}")
 
       JSON.parse(response)
     end

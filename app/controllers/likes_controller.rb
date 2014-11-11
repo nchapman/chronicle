@@ -8,7 +8,7 @@ class LikesController < ApplicationController
   # GET /likes
   # GET /likes.json
   def index
-    @likes = current_user.likes.includes(:page).order('likes.created_at desc').page(params[:page])
+    @likes = current_user.user_pages.likes.includes(:page).page(params[:page])
   end
 
   # GET /likes/1
@@ -19,12 +19,12 @@ class LikesController < ApplicationController
   # GET /likes/exists.json?like[url]=http...
   # TODO: Do something for html requests?
   def exists
-    render json: current_user.likes.find_by_url(like_params[:url]).exists?
+    render json: current_user.user_pages.likes.find_by_url(like_params[:url]).exists?
   end
 
   # GET /likes/new
   def new
-    @like = current_user.likes.new
+    @like = current_user.user_pages.new
   end
 
   # GET /likes/1/edit
@@ -34,7 +34,8 @@ class LikesController < ApplicationController
   # POST /likes
   # POST /likes.json
   def create
-    @like = current_user.likes.new(like_params)
+    @like = current_user.user_pages.new(like_params)
+    @like.liked = true
 
     respond_to do |format|
       if @like.save
@@ -64,9 +65,10 @@ class LikesController < ApplicationController
   # DELETE /likes/1
   # DELETE /likes/1.json
   def destroy
-    @like.destroy
+    @like.mark_unliked!
+
     respond_to do |format|
-      format.html { redirect_to likes_url, notice: 'Like was successfully destroyed.' }
+      format.html { redirect_to likes_url, notice: 'Like was successfully removed.' }
       format.json { head :no_content }
     end
   end
@@ -83,11 +85,11 @@ class LikesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_like
-      @like = current_user.likes.find(params[:id])
+      @like = current_user.user_pages.likes.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def like_params
-      params.require(:like).permit(:title, :url)
+      params.require(:like).permit(:title, :description, :url)
     end
 end

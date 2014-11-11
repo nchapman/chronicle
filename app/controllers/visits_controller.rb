@@ -8,7 +8,7 @@ class VisitsController < ApplicationController
   # GET /visits
   # GET /visits.json
   def index
-    @visits = current_user.visits.includes(:page).order('visits.created_at desc').page(params[:page])
+    @visits = current_user.visits.includes(:user_page).order('visits.created_at desc').page(params[:page])
   end
 
   # GET /visits/1

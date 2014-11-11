@@ -1,20 +1,23 @@
 class Visit < ActiveRecord::Base
   belongs_to :user
-  belongs_to :page
+  belongs_to :user_page
 
-  validates :url, presence: { on: :create }
-  validates :user, presence: true
+  validates :url, presence: true, on: :create
 
-  before_create :assign_page
+  before_create :assign_user_page
 
   attr_writer :url
 
-  # This allows likes to accept a URL during creation but proxy lookups to the associated page
-  def url
-    @url || (page && page.url)
+  # Clean up and normalize the URL
+  normalize_attribute :url do |value|
+    Page.normalize_url(value)
   end
 
-  def assign_page
-    self.page = Page.where(url: @url).first_or_create
+  def url
+    @url || (user_page && user_page.page && user_page.page.url)
+  end
+
+  def assign_user_page
+    self.user_page = UserPage.find_or_create_by_user_and_url(user, @url)
   end
 end

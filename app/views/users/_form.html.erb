@@ -12,8 +12,8 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :fxa_id %><br>
-    <%= f.text_field :fxa_id %>
+    <%= f.label :fxa_uid %><br>
+    <%= f.text_field :fxa_uid %>
   </div>
   <div class="field">
     <%= f.label :email %><br>
@@ -30,6 +30,10 @@
   <div class="field">
     <%= f.label :oauth_token %><br>
     <%= f.text_field :oauth_token %>
+  </div>
+  <div class="field">
+    <%= f.label :oauth_token_type %><br>
+    <%= f.text_field :oauth_token_type %>
   </div>
   <div class="actions">
     <%= f.submit %>

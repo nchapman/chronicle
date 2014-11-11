@@ -96,7 +96,7 @@ a {
     .page {
       @include span-columns(4);
       @include omega(3n);
-      height: 410px;
+      padding-bottom: 30px;
 
       .provider {
         color: #444;
