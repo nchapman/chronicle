@@ -4,6 +4,6 @@ class User < ActiveRecord::Base
   has_many :pages, through: :user_pages
 
   def avatar_url
-    "http://avatars.io/gravatar/#{Digest::MD5.hexdigest(email)}"
+    "//www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email)}"
   end
 end
