@@ -45,14 +45,8 @@ class UserPage < ActiveRecord::Base
     joins(:page).where('pages.url' => Page.normalize_url(url))
   end
 
-  def self.find_or_create_by_user_and_url(user, url)
-    user_page = user.user_pages.find_by_url(url).first
-
-    if user_page.nil?
-      user_page = UserPage.create(user: user, url: url)
-    end
-
-    user_page
+  def self.find_or_create_by_url(url)
+    find_by_url(url).create_with(url: url).first_or_create
   end
 
   delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,

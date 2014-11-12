@@ -19,6 +19,6 @@ class Visit < ActiveRecord::Base
   end
 
   def assign_user_page
-    self.user_page = UserPage.find_or_create_by_user_and_url(user, @url)
+    self.user_page = user.user_pages.find_or_create_by_url(url)
   end
 end
