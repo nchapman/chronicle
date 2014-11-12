@@ -13,6 +13,9 @@ module Authentication
     else
       nil
     end
+  rescue
+    forget_current_user
+    require_user
   end
 
   def forget_current_user
@@ -33,7 +36,7 @@ module Authentication
     end
   end
 
-  def redirect_back_or_default(default = '/')
+  def redirect_back_or_default(default = root_path)
     redirect_to(session.delete(:return_to) || default)
   end
 

@@ -42,11 +42,11 @@ class UserPage < ActiveRecord::Base
   end
 
   def self.find_by_url(url)
-    joins(:page).where('pages.url' => url)
+    joins(:page).where('pages.url' => Page.normalize_url(url))
   end
 
   def self.find_or_create_by_user_and_url(user, url)
-    user_page = find_by_url(url).first
+    user_page = user.user_pages.find_by_url(url).first
 
     if user_page.nil?
       user_page = UserPage.create(user: user, url: url)

@@ -35,7 +35,7 @@ class AuthController < ApplicationController
       self.current_user = user
     end
 
-    redirect_to root_path
+    redirect_back_or_default
   end
 
   def sign_out

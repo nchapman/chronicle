@@ -16,6 +16,7 @@ class Page < ActiveRecord::Base
 
   # This seems hacky but is reliable
   after_commit :enqueue_post_process, if: Proc.new { previous_changes[:id] }
+  after_update :index_user_pages
 
   # Alias the extracted attributes
   alias_attribute :title, :extracted_title
@@ -54,6 +55,12 @@ class Page < ActiveRecord::Base
     Rails.logger.info('Post processing page: ' + url)
 
     update_extracted_data!
+  end
+
+  def index_user_pages
+    user_pages.each do |user_page|
+      user_page.__elasticsearch__.index_document
+    end
   end
 
   def image_url
