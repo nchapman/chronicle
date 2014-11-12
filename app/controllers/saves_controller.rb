@@ -22,10 +22,9 @@ class SavesController < ApplicationController
   end
 
   def create
-    @user_page = current_user.user_pages.new(new_save_params)
-    @user_page.saved = true
+    @user_page = current_user.user_pages.find_or_create_by_url(new_save_params[:url])
 
-    @user_page.save
+    @user_page.update(new_save_params.merge({ saved: true }))
 
     respond_with(@user_page)
   end
@@ -60,7 +59,7 @@ class SavesController < ApplicationController
   private
 
     def new_save_params
-      params.require(:save).permit(:title, :description, :read, :url)
+      @new_save_params ||= params.require(:save).permit(:title, :description, :read, :url)
     end
 
     def update_save_params

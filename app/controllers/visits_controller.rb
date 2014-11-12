@@ -32,7 +32,7 @@ class VisitsController < ApplicationController
   end
 
   def update
-    @visit = current_user.visits.new(visit_params)
+    @visit = current_user.visits.find(params[:id])
 
     @visit.update(visit_params)
 
@@ -40,7 +40,7 @@ class VisitsController < ApplicationController
   end
 
   def destroy
-    @visit = current_user.visits.new(visit_params)
+    @visit = current_user.visits.find(params[:id])
 
     @visit.destroy
 

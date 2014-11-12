@@ -22,10 +22,9 @@ class LikesController < ApplicationController
   end
 
   def create
-    @user_page = current_user.user_pages.new(new_like_params)
-    @user_page.liked = true
+    @user_page = current_user.user_pages.find_or_create_by_url(new_like_params[:url])
 
-    @user_page.save
+    @user_page.update(new_like_params.merge({ liked: true }))
 
     respond_with(@user_page)
   end
@@ -60,7 +59,7 @@ class LikesController < ApplicationController
   private
 
     def new_like_params
-      params.require(:like).permit(:title, :description, :url)
+      @new_like_params ||= params.require(:like).permit(:title, :description, :url)
     end
 
     def update_like_params
