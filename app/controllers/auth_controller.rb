@@ -47,7 +47,7 @@ class AuthController < ApplicationController
   private
 
     def get_oauth_redirect_url(state, action)
-      "#{AppConfig.oauth.base_url}/authorization?client_id=#{AppConfig.oauth.client.id}&state=#{state}&action=#{action}&scope=profile"
+      "#{AppConfig.oauth.base_url}/authorization?client_id=#{AppConfig.oauth.client.id}&state=#{state}&action=#{action}&scope=profile&redirect_uri=#{auth_complete_url}"
     end
 
     def fetch_token(code)

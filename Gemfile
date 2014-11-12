@@ -22,6 +22,7 @@ gem 'andand'
 gem 'elasticsearch-model'
 gem 'puma'
 gem 'sucker_punch'
+gem 'foreman'
 
 group :development, :test do
   gem 'byebug'
@@ -29,5 +30,9 @@ group :development, :test do
   gem 'spring'
   gem 'awesome_print'
   gem 'dotenv-rails'
+end
+
+group :production do
+  gem 'rails_12factor'
 end
 

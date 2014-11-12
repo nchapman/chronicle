@@ -1,9 +1,9 @@
-development:
+default: &default
   oauth:
     base_url: https://oauth-latest.dev.lcip.org/v1
     client:
-      id: 1f9bbddcb3e160ab
-      secret: 24bf8caeaa685e2e42d9a75b48511f83adffaf6fcdd174ce8749358a376be911
+      id: <%= ENV['OAUTH_CLIENT_ID'] %>
+      secret: <%= ENV['OAUTH_CLIENT_SECRET'] %>
     profile:
       base_url: https://latest.dev.lcip.org/profile/v1
   url2png:
@@ -11,3 +11,12 @@ development:
     secret_key: <%= ENV['URL2PNG_SECRET_KEY'] %>
   embedly:
     key: <%= ENV['EMBEDLY_KEY'] %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+development:
+  <<: *default
