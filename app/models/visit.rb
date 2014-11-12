@@ -1,6 +1,7 @@
 class Visit < ActiveRecord::Base
   belongs_to :user
   belongs_to :user_page
+  has_one :page, through: :user_page
 
   validates :url, presence: true, on: :create
 

@@ -1,11 +1,30 @@
 class UserPage < ActiveRecord::Base
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
   belongs_to :user
   belongs_to :page
+  has_many :extracted_keywords, through: :page
+  has_many :extracted_entities, through: :page
 
   validates :user, presence: true
 
   before_create :assign_page
   before_save :update_status_times
+
+  mapping do
+    indexes :title, analyzer: :snowball
+    indexes :content, analyzer: :snowball
+    indexes :provider_display
+    indexes :provider_name
+    indexes :author_name
+    indexes :description
+    indexes :liked, type: :boolean
+    indexes :saved, type: :boolean
+    indexes :read, type: :boolean
+    indexes :keywords, analyzer: :snowball
+    indexes :entities, analyzer: :snowball
+  end
 
   attr_writer :url
 
@@ -66,6 +85,27 @@ class UserPage < ActiveRecord::Base
 
   def mark_unsaved!
     update!(saved: false)
+  end
+
+  def as_indexed_json(options = {})
+    hash = as_json(
+            only: [
+              :title,
+              :content,
+              :provider_display,
+              :provider_name,
+              :author_name,
+              :description,
+              :liked,
+              :saved,
+              :read
+            ]
+          )
+
+    hash['keywords'] = extracted_keywords.collect(&:name)
+    hash['entities'] = extracted_entities.collect(&:name)
+
+    hash
   end
 
   private

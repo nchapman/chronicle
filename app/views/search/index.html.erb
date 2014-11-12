@@ -1,0 +1,10 @@
+<form method="get">
+  <input name="q" value="<%= params[:q] %>" %>
+  <button type="submit">Search</button>
+</form>
+
+<div class="page-list">
+  <% @user_pages.records.each do |user_page| %>
+    <%= render partial: 'pages/item', locals: { title_url: user_page.url, page: user_page.page } %>
+  <% end %>
+</div>
