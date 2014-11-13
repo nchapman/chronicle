@@ -22,6 +22,10 @@ Rails.application.routes.draw do
     delete :sign_out
   end
 
+  namespace :extensions do
+    get :firefox
+  end
+
   get 'search' => 'search#index'
 
   root 'home#index'
