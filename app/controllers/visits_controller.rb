@@ -2,7 +2,7 @@ class VisitsController < ApplicationController
   before_action :require_user
 
   def index
-    @visits = current_user.visits.includes(:user_page).order('visits.created_at desc').page(params[:page])
+    @visits = current_user.visits.includes(:page).order('visits.created_at desc').page(params[:page])
 
     respond_with(@visits)
   end

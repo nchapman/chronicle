@@ -25,5 +25,7 @@ module Chronicle
 
     # Use Sucker Punch for background jobs
     config.active_job.queue_adapter = :sucker_punch
+
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

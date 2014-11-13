@@ -24,6 +24,9 @@ gem 'elasticsearch-model'
 gem 'puma'
 gem 'sucker_punch'
 gem 'foreman'
+gem 'http'
+gem 'nokogiri'
+gem 'ruby-readability', require: 'readability'
 
 group :development, :test do
   gem 'byebug'

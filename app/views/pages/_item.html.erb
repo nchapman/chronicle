@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page <% unless page.parsable? %>compact<% end %>">
   <div class="provider">
     <%= image_tag(page.favicon_url, class: 'favicon', width: 16, height: 16) if page.favicon_url %>
     <%= link_to page.provider_name, page.provider_url, class: 'name' %>

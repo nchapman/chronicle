@@ -20,7 +20,6 @@ class Page < ActiveRecord::Base
 
   # Alias the extracted attributes
   alias_attribute :title, :extracted_title
-  alias_attribute :favicon_url, :extracted_favicon_url
   alias_attribute :provider_display, :extracted_provider_display
   alias_attribute :provider_name, :extracted_provider_name
   alias_attribute :provider_url, :extracted_provider_url
@@ -30,6 +29,8 @@ class Page < ActiveRecord::Base
   alias_attribute :content, :extracted_content
   alias_attribute :media_height, :extracted_media_height
   alias_attribute :media_width, :extracted_media_width
+
+  alias_attribute :status_code, :parsed_status_code
 
   # Clean up and normalize the URL
   normalize_attribute :url do |value|
@@ -54,7 +55,23 @@ class Page < ActiveRecord::Base
   def post_process!
     Rails.logger.info('Post processing page: ' + url)
 
-    update_extracted_data!
+    update_parsed_data
+    update_extracted_data
+
+    save! if changed?
+  end
+
+  def update_parsed_data
+    parser = PageParser.new(url).fetch
+
+    self.parsed_title = parser.title
+    self.parsed_html = parser.body
+    self.parsed_content = parser.content
+    self.parsed_status_code = parser.status
+    self.parsed_content_type = parser.content_type
+    self.parsed_at = Time.now
+
+    true
   end
 
   def index_user_pages
@@ -63,11 +80,23 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def parsable?
+    status_code == 200
+  end
+
   def image_url
     if valid_extracted_image_url?
       extracted_image_url
     elsif valid_screenshot_url?
       screenshot_url
+    end
+  end
+
+  def favicon_url
+    if extracted_favicon_url
+      extracted_favicon_url
+    else
+      "https://getfavicon.appspot.com/#{CGI::escape(url)}"
     end
   end
 
@@ -96,6 +125,7 @@ class Page < ActiveRecord::Base
   private
 
     def valid_extracted_image_url?
+      parsable? &&
       extracted_image_url &&
       extracted_image_entropy &&
       extracted_image_entropy > MINIMUM_IMAGE_ENTROPY &&
@@ -103,7 +133,7 @@ class Page < ActiveRecord::Base
     end
 
     def valid_screenshot_url?
-      !(url =~ SCREENSHOT_DENY_PATTERN)
+      parsable? && !(url =~ SCREENSHOT_DENY_PATTERN)
     end
 
     def build_url2png_url(max_width = 500)

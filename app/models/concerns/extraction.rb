@@ -9,9 +9,13 @@ module Extraction
     end
   end
 
+  def extractable?
+    status_code == 200
+  end
+
   # TODO: This should eventually consider cache time
   def should_update_extracted_data?
-    !(url =~ /localhost/) && extracted_at.nil?
+    extractable? && !(url =~ /localhost/) && extracted_at.nil?
   end
 
   def update_extracted_data!

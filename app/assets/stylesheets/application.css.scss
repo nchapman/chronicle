@@ -180,6 +180,38 @@ a {
       overflow: auto;
       padding: 14px 0;
 
+      &.compact {
+        opacity: 0.7;
+        padding: 8px 0;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        .image {
+          display: none;
+        }
+
+        .provider {
+          display: inline-block;
+
+          .favicon {
+            vertical-align: -3px;
+          }
+
+          .name, .author {
+            display: none;
+          }
+        }
+
+        .title {
+          display: inline-block;
+          font-family: 'Open Sans', sans-serif;
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
+
       .image {
         background-position: center center;
         background-repeat: no-repeat;
