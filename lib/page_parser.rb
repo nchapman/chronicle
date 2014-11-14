@@ -10,13 +10,14 @@ class PageParser
 
     Timeout.timeout(2) do
       @response = HTTP.head(@url)
-      @headers = @response.headers
-      @status = @response.status
+
+      update_response_state
     end
 
     # Only fetch the body if it looks like we'll get back html
     fetch_body if html? && !gzipped?
   rescue
+    Rails.logger.warn($!)
     # Fail everything as a timeout for now
     @status = -1
     @headers = {}
@@ -29,7 +30,8 @@ class PageParser
   end
 
   def html?
-    status == 200 && content_type && content_type =~ /text\/html/
+    # Hack for sites that don't support head requests (405 response)
+    (status == 200 || status == 405) && content_type && content_type =~ /text\/html/
   end
 
   def gzipped?
@@ -59,12 +61,20 @@ class PageParser
   private
 
     def fetch_body
-      @body = HTTP.get(@url).to_s
+      @response = HTTP.get(@url)
+      @body = @response.to_s
+
+      update_response_state
     end
 
     def doc
       if body
-        @doc ||= Readability::Document.new(body, tags: %w[div p img a], attributes: %w[src href], remove_empty_nodes: false)
+        @doc ||= Readability::Document.new(body, tags: %w[div p img a pre], attributes: %w[src href], remove_empty_nodes: false)
       end
+    end
+
+    def update_response_state
+      @headers = @response.headers
+      @status = @response.status
     end
 end

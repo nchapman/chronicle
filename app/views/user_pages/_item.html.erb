@@ -1,0 +1,10 @@
+<div class="page <%= user_page.interesting? ? 'interesting' : 'boring' %>">
+  <div class="provider">
+    <%= image_tag(user_page.favicon_url, class: 'favicon', width: 16, height: 16) if user_page.favicon_url %>
+    <%= link_to user_page.provider_name, user_page.provider_url, class: 'name' %>
+    <span class="author"><%= user_page.author_name %></span>
+  </div>
+  <div class="image" style="background-image: url(<%= user_page.image_url %>)"></div>
+  <h3 class="title"><%= link_to(truncate(user_page.title || user_page.url, length: 90), title_url) %></h3>
+  <div class="description"><%= first_sentence(user_page.summary) %></div>
+</div>

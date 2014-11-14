@@ -5,7 +5,6 @@ class Page < ActiveRecord::Base
   MINIMUM_IMAGE_ENTROPY = 1.75
   EXTRACTED_IMAGE_DENY_PATTERN = /github.com|(\..{2,3}\/$)/
   SCREENSHOT_DENY_PATTERN = /localhost/
-  DEFAULT_FAVICON_URL = 'https://accounts.firefox.com/favicon.ico'
 
   # Relationships
   has_many :extracted_keywords
@@ -27,7 +26,6 @@ class Page < ActiveRecord::Base
   alias_attribute :author_name, :extracted_author_name
   alias_attribute :media_type, :extracted_media_type
   alias_attribute :media_html, :extracted_media_html
-  alias_attribute :content, :extracted_content
   alias_attribute :media_height, :extracted_media_height
   alias_attribute :media_width, :extracted_media_width
 
@@ -85,6 +83,10 @@ class Page < ActiveRecord::Base
     status_code == 200
   end
 
+  def interesting?
+    parsable? && !(url =~ /search\?q=/i)
+  end
+
   def image_url
     if valid_extracted_image_url?
       extracted_image_url
@@ -97,8 +99,12 @@ class Page < ActiveRecord::Base
     if extracted_favicon_url
       extracted_favicon_url
     else
-      "https://getfavicon.appspot.com/#{CGI::escape(url)}?defaulticon=#{DEFAULT_FAVICON_URL}"
+      "https://getfavicon.appspot.com/#{CGI::escape(url)}"
     end
+  end
+
+  def content
+    extracted_content || parsed_content
   end
 
   def summary
@@ -128,8 +134,7 @@ class Page < ActiveRecord::Base
     def valid_extracted_image_url?
       parsable? &&
       extracted_image_url &&
-      extracted_image_entropy &&
-      extracted_image_entropy > MINIMUM_IMAGE_ENTROPY &&
+      (extracted_image_entropy.nil? || extracted_image_entropy > MINIMUM_IMAGE_ENTROPY) &&
       !(url =~ EXTRACTED_IMAGE_DENY_PATTERN)
     end
 

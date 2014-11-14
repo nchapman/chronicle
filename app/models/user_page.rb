@@ -51,10 +51,16 @@ class UserPage < ActiveRecord::Base
 
   delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,
            :media_html, :content, :media_height, :media_width, :image_url, :summary, :published_at,
+           :parsable?, :interesting?, :watchable?, :screenshot_url,
            to: :page
 
   def title
-    self[:title] || page.andand.title
+    # Don't use titles that look like urls
+    if self[:title] && !(self[:title] =~ /(https?:\/\/)|(www\.)/)
+      self[:title]
+    else
+      page.andand.title
+    end
   end
 
   def description
