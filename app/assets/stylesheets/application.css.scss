@@ -9,7 +9,7 @@
 }
 
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Fira Sans', sans-serif;
 }
 
 a {
@@ -142,7 +142,6 @@ a {
       }
 
       .title {
-        font-family: 'Open Sans Condensed';
         font-size: 20px;
         line-height: 1.3em;
         margin: 8px 0 8px 0;
@@ -180,7 +179,7 @@ a {
       overflow: auto;
       padding: 14px 0;
 
-      &.compact {
+      &.boring {
         opacity: 0.7;
         padding: 8px 0;
 
@@ -206,9 +205,13 @@ a {
 
         .title {
           display: inline-block;
-          font-family: 'Open Sans', sans-serif;
           font-size: 14px;
           font-weight: normal;
+          margin-left: 2px;
+        }
+
+        .description {
+          display: none;
         }
       }
 
@@ -224,7 +227,6 @@ a {
       }
 
       .title {
-        font-family: 'Open Sans Condensed';
         font-size: 16px;
         margin: 0;
 
@@ -265,7 +267,6 @@ a {
 
     .title {
       border-bottom: 1px solid #eee;
-      font-family: 'Open Sans Condensed';
       font-size: 26px;
       line-height: 1.3em;
       margin: 6px 0 8px 0;
