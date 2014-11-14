@@ -9,4 +9,8 @@ module ApplicationHelper
   def controller?(*controller)
     controller.include?(params[:controller])
   end
+
+  def title(page_title)
+    content_for(:title) { page_title }
+  end
 end
