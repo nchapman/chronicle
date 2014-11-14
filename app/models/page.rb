@@ -5,6 +5,7 @@ class Page < ActiveRecord::Base
   MINIMUM_IMAGE_ENTROPY = 1.75
   EXTRACTED_IMAGE_DENY_PATTERN = /github.com|(\..{2,3}\/$)/
   SCREENSHOT_DENY_PATTERN = /localhost/
+  DEFAULT_FAVICON_URL = 'https://accounts.firefox.com/favicon.ico'
 
   # Relationships
   has_many :extracted_keywords
@@ -96,7 +97,7 @@ class Page < ActiveRecord::Base
     if extracted_favicon_url
       extracted_favicon_url
     else
-      "https://getfavicon.appspot.com/#{CGI::escape(url)}"
+      "https://getfavicon.appspot.com/#{CGI::escape(url)}?defaulticon=#{DEFAULT_FAVICON_URL}"
     end
   end
 
