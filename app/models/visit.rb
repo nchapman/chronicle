@@ -8,6 +8,7 @@ class Visit < ActiveRecord::Base
   before_create :assign_user_page
 
   attr_writer :url
+  attr_accessor :title
 
   # Clean up and normalize the URL
   normalize_attribute :url do |value|
@@ -19,6 +20,6 @@ class Visit < ActiveRecord::Base
   end
 
   def assign_user_page
-    self.user_page = user.user_pages.find_or_create_by_url(url)
+    self.user_page = user.user_pages.find_or_create_by_url(url, title)
   end
 end

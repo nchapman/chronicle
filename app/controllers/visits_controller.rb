@@ -50,6 +50,6 @@ class VisitsController < ApplicationController
   private
 
     def visit_params
-      params.require(:visit).permit(:url)
+      params.require(:visit).permit(:url, :title)
     end
 end
