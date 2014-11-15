@@ -1,8 +1,8 @@
 <% title 'Likes' %>
 
-<div class="page-grid likes">
+<div class="page-list likes">
   <% @user_pages.each do |user_page| %>
-    <%= render partial: 'user_pages/item', locals: { title_url: like_path(user_page), user_page: user_page } %>
+    <%= render partial: 'user_pages/item', locals: { title_url: user_page.url, user_page: user_page } %>
   <% end %>
 </div>
 

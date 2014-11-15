@@ -179,6 +179,37 @@ a {
       overflow: auto;
       padding: 14px 0;
 
+      .image {
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border: 1px solid #eee;
+        float: left;
+        height: 45px;
+        margin-right: 15px;
+        width: 60px;
+      }
+
+      .title {
+        font-size: 16px;
+        margin: 0;
+
+        a {
+          color: #222;
+          text-decoration: none;
+        }
+      }
+
+      .description {
+        color: #999;
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .provider {
+        display: none;
+      }
+
       &.boring {
         opacity: 0.7;
         padding: 8px 0;
@@ -213,37 +244,6 @@ a {
         .description {
           display: none;
         }
-      }
-
-      .image {
-        background-position: center center;
-        background-repeat: no-repeat;
-        background-size: cover;
-        border: 1px solid #eee;
-        float: left;
-        height: 65px;
-        margin-right: 15px;
-        width: 85px;
-      }
-
-      .title {
-        font-size: 16px;
-        margin: 0;
-
-        a {
-          color: #222;
-          text-decoration: none;
-        }
-      }
-
-      .description {
-        color: #999;
-        font-size: 12px;
-        margin-top: 4px;
-      }
-
-      .provider {
-        display: none;
       }
     }
   }
