@@ -2,13 +2,13 @@ module Authentication
   extend ActiveSupport::Concern
 
   def current_user=(user)
-    @current_user = user
+    cookies.signed[:user_id] = { value: user.id, expires: 1.month.from_now }
 
-    session[:user_id] = user.id
+    @current_user = user
   end
 
   def current_user
-    if user_id = session[:user_id]
+    if user_id = cookies.signed[:user_id]
       @current_user ||= User.find(user_id)
     else
       nil
@@ -21,7 +21,7 @@ module Authentication
   def forget_current_user
     @current_user = nil
 
-    session.delete(:user_id)
+    cookies.delete(:user_id)
   end
 
   def require_user
