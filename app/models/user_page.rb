@@ -8,8 +8,9 @@ class UserPage < ActiveRecord::Base
   has_many :extracted_entities, through: :page
 
   validates :user, presence: true
+  validates :page, uniqueness: { scope: :user_id }
 
-  before_create :assign_page
+  before_validation :assign_page
   before_save :update_status_times
 
   mapping do
@@ -49,9 +50,15 @@ class UserPage < ActiveRecord::Base
     find_by_url(url).create_with(url: url, title: title).first_or_create
   end
 
+  def self.remove_duplicates
+    all.each do |up|
+      UserPage.where('id <> ? AND user_id = ? AND page_id = ?', up.id, up.user_id, up.page_id).destroy_all
+    end
+  end
+
   delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,
            :media_html, :content, :media_height, :media_width, :image_url, :summary, :published_at,
-           :parsable?, :interesting?, :watchable?, :screenshot_url,
+           :parsable?, :interesting?, :watchable?, :screenshot_url, :media_size_ratio,
            to: :page
 
   def title
@@ -111,7 +118,7 @@ class UserPage < ActiveRecord::Base
   private
 
     def assign_page
-      self.page = Page.find_or_create_by_url(@url)
+      self.page ||= Page.find_or_create_by_url(@url)
     end
 
     def update_status_times

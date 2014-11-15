@@ -60,6 +60,12 @@ class Page < ActiveRecord::Base
     save! if changed?
   end
 
+  def self.post_process_all!
+    all.each do |page|
+      page.post_process! rescue nil
+    end
+  end
+
   def update_parsed_data
     parser = PageParser.new(url).fetch
 

@@ -113,7 +113,7 @@ module Extraction
     end
 
     def extract_keywords(keywords = nil)
-      self.extracted_keywords.delete_all
+      self.extracted_keywords.destroy_all
 
       if keywords
         keywords.each do |k|
@@ -123,7 +123,7 @@ module Extraction
     end
 
     def extract_entities(entities = nil)
-      self.extracted_entities.delete_all
+      self.extracted_entities.destroy_all
 
       if entities
         entities.each do |e|
