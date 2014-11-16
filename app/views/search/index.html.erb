@@ -4,3 +4,5 @@
     <%= render partial: 'user_pages/item', locals: { title_url: user_page.url, user_page: user_page } %>
   <% end %>
 </div>
+
+<%= will_paginate @user_pages %>

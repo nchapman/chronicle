@@ -26,6 +26,7 @@ class UserPage < ActiveRecord::Base
     indexes :interesting, type: :boolean
     indexes :keywords
     indexes :entities
+    indexes :updated_at, type: :date
   end
 
   attr_writer :url
@@ -106,7 +107,8 @@ class UserPage < ActiveRecord::Base
               :description,
               :liked,
               :saved,
-              :read
+              :read,
+              :updated_at
             ]
           )
 

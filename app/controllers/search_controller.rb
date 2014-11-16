@@ -24,19 +24,22 @@ class SearchController < ApplicationController
           },
           functions: [
             {
-              filter: { term: { liked: true }},
+              filter: { term: { liked: true } },
               weight: 2
             },
             {
-              filter: { term: { saved: true }},
+              filter: { term: { saved: true } },
               weight: 1.5
             },
             {
-              filter: { term: { interesting: true }},
+              filter: { term: { interesting: true } },
               weight: 1.5
             },
+            {
+              gauss: { updated_at: { scale: '4w' } }
+            }
           ],
-          score_mode: 'sum'
+          score_mode: 'multiply'
         }
       },
       filter: { term: { user_id: current_user.id } }
