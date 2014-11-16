@@ -14,17 +14,18 @@ class UserPage < ActiveRecord::Base
   before_save :update_status_times
 
   mapping do
-    indexes :title, analyzer: :snowball
-    indexes :content, analyzer: :snowball
+    indexes :user_id, type: :string, index: :not_analyzed
+    indexes :title
+    indexes :content
     indexes :provider_display
     indexes :provider_name
     indexes :author_name
-    indexes :description
     indexes :liked, type: :boolean
     indexes :saved, type: :boolean
     indexes :read, type: :boolean
-    indexes :keywords, analyzer: :snowball
-    indexes :entities, analyzer: :snowball
+    indexes :interesting, type: :boolean
+    indexes :keywords
+    indexes :entities
   end
 
   attr_writer :url
@@ -97,8 +98,8 @@ class UserPage < ActiveRecord::Base
   def as_indexed_json(options = {})
     hash = as_json(
             only: [
+              :user_id,
               :title,
-              :content,
               :provider_display,
               :provider_name,
               :author_name,
@@ -109,6 +110,9 @@ class UserPage < ActiveRecord::Base
             ]
           )
 
+    # Index plain text content
+    hash['content'] = ActionController::Base.helpers.strip_tags(content)
+    hash['interesting'] = interesting?
     hash['keywords'] = extracted_keywords.collect(&:name)
     hash['entities'] = extracted_entities.collect(&:name)
 
