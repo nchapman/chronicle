@@ -30,8 +30,8 @@ class PageParser
   end
 
   def html?
-    # Hack for sites that don't support head requests (405 response)
-    (status == 200 || status == 405) && content_type && content_type =~ /text\/html/
+    # Hack for sites that don't support head requests (404, 405 response)
+    (status == 200 || status == 405 || status == 404) && content_type && content_type =~ /text\/html/
   end
 
   def gzipped?
