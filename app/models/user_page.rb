@@ -64,12 +64,19 @@ class UserPage < ActiveRecord::Base
            to: :page
 
   def title
-    # Don't use titles that look like urls
-    if self[:title] && !(self[:title] =~ /(https?:\/\/)|(www\.)/)
-      self[:title]
-    else
-      page.andand.title
+    unless @title
+      # Don't use titles that look like urls
+      if self[:title] && !(self[:title] =~ /(https?:\/\/)|(www\.)/)
+        @title = self[:title]
+      else
+        @title = page.andand.title
+      end
+
+      # Clean up the title a bit
+      @title = @title ? @title.sub(/▶ /, '') : @title
     end
+
+    @title
   end
 
   def description
