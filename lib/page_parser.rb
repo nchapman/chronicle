@@ -8,7 +8,7 @@ class PageParser
   def fetch
     raise if uri.host =~ /localhost|127.0.0.1|0.0.0.0/
 
-    Timeout.timeout(2) do
+    Timeout.timeout(5) do
       @response = HTTP.head(@url)
 
       update_response_state
