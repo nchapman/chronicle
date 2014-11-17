@@ -27,6 +27,7 @@ gem 'foreman'
 gem 'http'
 gem 'nokogiri'
 gem 'ruby-readability', require: 'readability'
+gem 'font-awesome-sass', '~> 4.2.0'
 
 group :development, :test do
   gem 'byebug'
