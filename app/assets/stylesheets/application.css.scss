@@ -3,6 +3,15 @@
 @import 'lib/normalize';
 @import 'fonts';
 
+$black: #000;
+$dark-gray: #444;
+$medium-gray: #888;
+$light-gray: #eee;
+$ultra-light-gray: #f8f8f8;
+$firefox-blue: #00539F;
+$firefox-light-blue: #0095DD;
+$firefox-light-orange: #FF9500;
+
 /* Border box all the things */
 *, *:before, *:after {
   box-sizing: border-box;
@@ -13,10 +22,10 @@ body {
 }
 
 a {
-  color: #0095DD;
+  color: $firefox-light-blue;
 
   &:visited {
-    color: #00539F;
+    color: $firefox-blue;
   }
 }
 
@@ -26,7 +35,7 @@ a {
   padding: 1em;
 
   > header {
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid $light-gray;
     height: 42px;
     position: relative;
     margin-bottom: 2em;
@@ -56,7 +65,7 @@ a {
           margin-right: 16px;
 
           a {
-            color: #888;
+            color: $medium-gray;
             font-size: 14px;
             font-weight: 300;
             letter-spacing: 0.6px;
@@ -64,12 +73,12 @@ a {
             text-transform: uppercase;
 
             &:hover {
-              color: #FF9500;
+              color: $firefox-light-orange;
             }
           }
 
           &.current a {
-            color: #000;
+            color: $black;
             font-weight: normal;
           }
         }
@@ -109,7 +118,7 @@ a {
       padding-bottom: 30px;
 
       .provider {
-        color: #444;
+        color: $dark-gray;
         font-size: 12px;
         font-weight: bold;
         letter-spacing: 0.5px;
@@ -128,7 +137,7 @@ a {
         }
 
         .author {
-          color: #888;
+          color: $medium-gray;
           display: none;
           font-weight: normal;
         }
@@ -147,13 +156,13 @@ a {
         margin: 8px 0 8px 0;
 
         a {
-          color: #000;
+          color: $black;
           text-decoration: none;
         }
       }
 
       .description {
-        color: #444;
+        color: $dark-gray;
         font-size: 12px;
       }
     }
@@ -161,7 +170,7 @@ a {
 
   .page-list {
     .date-divider {
-      border-bottom: 4px solid #eee;
+      border-bottom: 4px solid $light-gray;
       color: #aaa;
       font-size: 16px;
       font-weight: bold;
@@ -175,7 +184,7 @@ a {
     }
 
     .page {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid $light-gray;
       overflow: auto;
       padding: 14px 0;
 
@@ -183,7 +192,7 @@ a {
         background-position: center center;
         background-repeat: no-repeat;
         background-size: cover;
-        border: 1px solid #eee;
+        border: 1px solid $light-gray;
         float: left;
         height: 45px;
         margin-right: 15px;
@@ -252,7 +261,7 @@ a {
     margin: 0 auto;
 
     .provider {
-      color: #888;
+      color: $medium-gray;
       font-size: 13px;
 
       img {
@@ -266,7 +275,7 @@ a {
     }
 
     .title {
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid $light-gray;
       font-size: 26px;
       line-height: 1.3em;
       margin: 6px 0 8px 0;
@@ -274,7 +283,7 @@ a {
     }
 
     .details {
-      color: #888;
+      color: $medium-gray;
       font-size: 13px;
       margin-bottom: 30px;
 
@@ -324,8 +333,8 @@ a {
       }
 
       blockquote {
-        background: #f8f8f8;
-        border-left: 8px solid #ddd;
+        background: $ultra-light-gray;
+        border-left: 8px solid $light-gray;
         font-style: italic;
         margin: 0;
         padding: 12px;
