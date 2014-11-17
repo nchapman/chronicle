@@ -90,7 +90,7 @@ class Page < ActiveRecord::Base
   end
 
   def interesting?
-    parsable? && !(url =~ /search\?q=/i)
+    parsable? && !(url =~ /search\/?\?q=/i)
   end
 
   def image_url

@@ -66,7 +66,7 @@ class UserPage < ActiveRecord::Base
   def title
     unless @title
       # Don't use titles that look like urls
-      if self[:title] && !(self[:title] =~ /(https?:\/\/)|(www\.)/)
+      if self[:title] && !(self[:title] =~ /(https?:\/\/)|(www\.)|(Connecting…)/)
         @title = self[:title]
       else
         @title = page.andand.title
