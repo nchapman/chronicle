@@ -61,7 +61,7 @@ class UserPage < ActiveRecord::Base
   delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,
            :media_html, :content, :media_height, :media_width, :image_url, :summary, :published_at,
            :parsable?, :interesting?, :readable?, :watchable?, :screenshot_url, :media_size_ratio,
-           :favicon_color,
+           :favicon_color, :image_size_ratio,
            to: :page
 
   def title

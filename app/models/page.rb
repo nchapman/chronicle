@@ -101,6 +101,15 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def image_size_ratio
+    if extracted_image_height && extracted_image_width
+      extracted_image_height.to_f / extracted_image_width.to_f
+    else
+      # Not sure what the right default is here
+      0
+    end
+  end
+
   def favicon_url(default_icon = nil)
     if extracted_favicon_url
       extracted_favicon_url
@@ -136,7 +145,9 @@ class Page < ActiveRecord::Base
   end
 
   def media_size_ratio
-    media_height.to_f / media_width.to_f
+    if media_height && media_width
+      media_height.to_f / media_width.to_f
+    end
   end
 
   private

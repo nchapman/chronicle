@@ -5,7 +5,7 @@
     <span class="author"><%= user_page.author_name %></span>
   </div>
   <%= link_to user_page.url do %>
-    <span class="image" style="background-image: url(<%= user_page.image_url %>)">
+    <span class="image <%= user_page.image_size_ratio <= 1 ? 'landscape' : 'portrait' %>" style="background-image: url(<%= user_page.image_url %>)">
       <% if user_page.watchable? %>
         <%= icon('play') %>
       <% end %>
