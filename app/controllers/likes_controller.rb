@@ -2,7 +2,7 @@ class LikesController < ApplicationController
   before_action :require_user
 
   def index
-    @user_pages = likes_scope.includes(:page).page(params[:page])
+    @user_pages = likes_scope.includes(:page).order('liked_at desc').page(params[:page])
 
     respond_with(@user_pages)
   end

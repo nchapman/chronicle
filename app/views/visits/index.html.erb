@@ -1,6 +1,6 @@
 <% title 'History' %>
 
-<div class="page-list">
+<div class="page-list visits">
   <% current_date = nil %>
   <% @visits.each do |visit| %>
     <% if current_date != visit.created_at.to_date %>

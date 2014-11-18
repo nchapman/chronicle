@@ -16,6 +16,12 @@ $firefox-light-blue: #0095DD;
 $firefox-orange: #E66000;
 $firefox-light-orange: #FF9500;
 
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 /* Border box all the things */
 *, *:before, *:after {
   box-sizing: border-box;
@@ -34,7 +40,6 @@ a {
 }
 
 .fa {
-  color: $medium-gray;
   font-size: 14px;
 }
 
@@ -135,7 +140,7 @@ a {
         text-transform: uppercase;
 
         img {
-          vertical-align: -3px;
+          vertical-align: -4px;
         }
 
         .name {
@@ -179,9 +184,54 @@ a {
         }
       }
 
+      .url {
+        display: none;
+      }
+
       .description {
         color: $dark-gray;
         font-size: 12px;
+      }
+
+      .actions {
+        margin-top: 5px;
+        opacity: 0;
+        transition: 0.1s ease-in;
+
+        a {
+          color: $medium-gray;
+          display: inline-block;
+          font-size: 12px;
+          margin-right: 4px;
+          text-decoration: none;
+
+          &.active {
+            color: $firefox-light-orange;
+          }
+
+          .fa {
+            margin-right: 1px;
+          }
+
+          &:hover {
+            color: $firefox-orange;
+          }
+
+          &.read, &.watch {
+
+          }
+        }
+      }
+
+      &:hover .actions {
+        opacity: 1;
+      }
+    }
+
+    // Customize visible actions by list
+    &.saves .page .actions {
+      .save {
+        display: none;
       }
     }
   }
@@ -203,7 +253,7 @@ a {
 
     .page {
       border-bottom: 1px solid $light-gray;
-      overflow: auto;
+      overflow: hidden;
       padding: 14px 0;
       position: relative;
 
@@ -230,8 +280,10 @@ a {
       }
 
       .title {
+        @include truncate;
         font-size: 16px;
         margin: 0;
+        padding-right: 115px;
 
         a {
           color: #222;
@@ -239,48 +291,122 @@ a {
         }
       }
 
-      .description {
+      .url {
+        @include truncate;
         color: #999;
         font-size: 12px;
         margin-top: 4px;
+        padding-right: 115px;
+
+        a {
+          color: inherit;
+          text-decoration: none;
+
+          &:hover {
+            color: $firefox-orange;
+            text-decoration: underline;
+          }
+        }
       }
 
-      .provider {
+      .provider, .description {
         display: none;
       }
 
-      &.boring {
-        opacity: 0.7;
-        padding: 8px 0;
+      .actions {
+        margin-top: -8px;
+        position: absolute;
+        right: 0;
+        top: 50%;
 
-        &:hover {
-          opacity: 1;
+        a {
+          color: #ddd;
+          display: block;
+          float: left;
+          font-size: 12px;
+          text-align: center;
+          text-decoration: none;
+          transition: 50ms ease-in;
+          width: 50px;
+
+          &.active {
+            color: $firefox-light-orange !important;
+          }
+
+          .label {
+            display: block;
+            left: 50%;
+            margin-left: -40px;
+            margin-top: 3px;
+            opacity: 0;
+            position: relative;
+            transition: 100ms ease-in;
+            white-space: nowrap;
+            width: 80px;
+          }
         }
+      }
 
+      &:hover .actions {
+        a {
+          color: #aaa;
+
+          &:hover {
+            color: $firefox-orange !important;
+
+            .label {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      &.boring {
         .image {
           display: none;
         }
 
         .provider {
-          display: inline-block;
+          display: block;
+          float: left;
+          height: 16px;
+          margin-right: 15px;
+          position: relative;
+          width: 60px;
 
           .favicon {
-            vertical-align: -3px;
+            left: 50%;
+            margin-left: -8px;
+            margin-top: -8px;
+            position: absolute;
+            top: 50%;
           }
 
-          .name, .author {
+          .name {
             display: none;
           }
         }
 
         .title {
-          display: inline-block;
+          color: $medium-gray;
           font-size: 14px;
           font-weight: normal;
-          margin-left: 2px;
         }
 
-        .description {
+        .url {
+          display: none;
+        }
+
+        .actions a .label {
+          display: none;
+        }
+      }
+    }
+
+    // Customize visible actions by list
+    &.visits, &.likes {
+      .page .actions {
+        .archive {
           display: none;
         }
       }
@@ -338,6 +464,7 @@ a {
     }
 
     .media {
+      background: $light-gray;
       height: 0;
       margin: 10px 0;
       overflow: hidden;

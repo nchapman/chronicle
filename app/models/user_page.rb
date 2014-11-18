@@ -22,7 +22,7 @@ class UserPage < ActiveRecord::Base
     indexes :author_name
     indexes :liked, type: :boolean
     indexes :saved, type: :boolean
-    indexes :read, type: :boolean
+    indexes :archived, type: :boolean
     indexes :interesting, type: :boolean
     indexes :keywords
     indexes :entities
@@ -60,7 +60,8 @@ class UserPage < ActiveRecord::Base
 
   delegate :favicon_url, :provider_display, :provider_name, :provider_url, :author_name, :media_type,
            :media_html, :content, :media_height, :media_width, :image_url, :summary, :published_at,
-           :parsable?, :interesting?, :watchable?, :screenshot_url, :media_size_ratio,
+           :parsable?, :interesting?, :readable?, :watchable?, :screenshot_url, :media_size_ratio,
+           :favicon_color,
            to: :page
 
   def title
@@ -114,7 +115,7 @@ class UserPage < ActiveRecord::Base
               :description,
               :liked,
               :saved,
-              :read,
+              :archived,
               :updated_at
             ]
           )
@@ -136,15 +137,15 @@ class UserPage < ActiveRecord::Base
 
     def update_status_times
       if saved_changed?
-        self.saved_at = self.saved ? Time.now : nil
+        self.saved_at = saved ? Time.now : nil
       end
 
       if liked_changed?
-        self.liked_at = self.liked ? Time.now : nil
+        self.liked_at = liked ? Time.now : nil
       end
 
-      if read_changed?
-        self.read_at = self.read ? Time.now : nil
+      if archived_changed?
+        self.archived_at = archived ? Time.now : nil
       end
     end
 end

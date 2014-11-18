@@ -1,6 +1,6 @@
 <div class="page <%= user_page.interesting? ? 'interesting' : 'boring' %>">
   <div class="provider">
-    <%= image_tag(user_page.favicon_url, class: 'favicon', width: 16, height: 16) if user_page.favicon_url %>
+    <%= image_tag(user_page.favicon_url(image_url('globe.png')), class: 'favicon', width: 16, height: 16) if user_page.favicon_url %>
     <%= link_to user_page.provider_name, user_page.provider_url, class: 'name' %>
     <span class="author"><%= user_page.author_name %></span>
   </div>
@@ -10,5 +10,15 @@
     <% end %>
   </div>
   <h3 class="title"><%= link_to(truncate(user_page.title || user_page.url, length: 90), title_url) %></h3>
+  <div class="url"><%= link_to user_page.url %></div>
   <div class="description"><%= first_sentence(user_page.summary) %></div>
+  <div class="actions">
+    <% if user_page.watchable? %>
+      <%= action_button user_page, :saved, label: 'Watch Later', active_label: 'Watching Later', class: 'save', icon: 'mail-forward' %>
+    <% elsif user_page.readable? %>
+      <%= action_button user_page, :saved, label: 'Read Later', active_label: 'Reading Later', class: 'save', icon: 'mail-forward' %>
+    <% end %>
+    <%= action_button user_page, :liked, label: 'Like', active_label: 'Liked', class: 'like', icon: 'heart' %>
+    <%= action_button user_page, :archived, label: 'Archive', active_label: 'Archived', class: 'archive', icon: 'check' %>
+  </div>
 </div>

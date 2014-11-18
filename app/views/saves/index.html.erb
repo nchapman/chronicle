@@ -1,6 +1,6 @@
 <% title 'Reading List' %>
 
-<div class="page-grid likes">
+<div class="page-grid saves">
   <% @user_pages.each do |user_page| %>
     <%= render partial: 'user_pages/item', locals: { title_url: save_path(user_page), user_page: user_page } %>
   <% end %>

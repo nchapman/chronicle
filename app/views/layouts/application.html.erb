@@ -3,7 +3,7 @@
   <head>
     <title><%= (page_title = yield(:title)).present? ? "#{page_title} | " : '' %>Chronicle</title>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application' %>
     <%= csrf_meta_tags %>
   </head>
   <body>
@@ -15,7 +15,7 @@
             <% if current_user %>
               <li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li>
               <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
-              <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Bookmarks', likes_path %></li>
+              <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
               <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li>
             <% end %>
           </ul>

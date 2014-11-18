@@ -28,6 +28,7 @@ class Page < ActiveRecord::Base
   alias_attribute :media_html, :extracted_media_html
   alias_attribute :media_height, :extracted_media_height
   alias_attribute :media_width, :extracted_media_width
+  alias_attribute :favicon_color, :extracted_favicon_color
 
   alias_attribute :status_code, :parsed_status_code
 
@@ -101,11 +102,11 @@ class Page < ActiveRecord::Base
     end
   end
 
-  def favicon_url
+  def favicon_url(default_icon = nil)
     if extracted_favicon_url
       extracted_favicon_url
     else
-      "https://getfavicon.appspot.com/#{CGI::escape(url)}"
+      "https://getfavicon.appspot.com/#{CGI::escape(url)}?defaulticon=#{default_icon}"
     end
   end
 
@@ -129,6 +130,10 @@ class Page < ActiveRecord::Base
 
   def watchable?
     extracted_media_type == 'video'
+  end
+
+  def readable?
+    content.present?
   end
 
   def media_size_ratio
