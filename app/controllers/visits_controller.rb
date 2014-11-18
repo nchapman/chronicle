@@ -2,7 +2,13 @@ class VisitsController < ApplicationController
   before_action :require_user
 
   def index
-    @visits = current_user.visits.includes({ user_page: :page }).order('visits.created_at desc').page(params[:page])
+    @visits = current_user
+      .visits
+      .joins({ user_page: :page })
+      .where("pages.url NOT LIKE '%localhost%'") # HACK: Exclude localhost for demos
+      .includes({ user_page: :page })
+      .order('visits.created_at desc')
+      .page(params[:page])
 
     respond_with(@visits)
   end
