@@ -40,12 +40,15 @@ a {
   }
 }
 
-#main-header {
-  //border-bottom: 1px solid $medium-gray;
+#main-header-wrapper {
   background: #f0f0f0;
-  position: relative;
-  margin-bottom: 2em;
   height:50px;
+  margin-bottom: 2em;
+  position: relative;
+}
+
+#main-header {
+  margin: 0 10px;
 
   h1 {
     background: asset-data-url("chron-logo-temp@2x.png") no-repeat left center;
@@ -54,26 +57,30 @@ a {
     font-size: 24px;
     font-weight: 100;
     height: 50px;
-    padding: 13px 0 13px 40px;
     margin: 0;
+    padding: 13px 0 13px 40px;
     width:160px;
   }
 
   nav {
     float:left;
+
     ul {
       list-style: none;
       margin: 0;
       padding: 0;
+
       li {
         float: left;
+
         &.current a {
           background: #fff;
-          color: $firefox-orange;
           border-top: 3px solid $firefox-orange;
-          padding: 19px 10px 12px 10px; 
+          color: $firefox-orange;
+          padding: 19px 10px 12px 10px;
           transition: all 250ms;
         }
+
         a {
           color: #666;
           display: block;
@@ -84,6 +91,7 @@ a {
           text-align: center;
           text-decoration: none;
           transition: all 250ms;
+
           &:hover {
             background-color: #fff;
           }
@@ -91,18 +99,21 @@ a {
       }
     }
   }
+
   .search {
     float: right;
+
     input {
+      border-bottom: 1px solid #ccc;
+      border: none;
       display: block;
-      height:41px;
       font-size: 24px;
       font-weight: 100;
-      padding: 7px 5px 3px 5px;
-      border: none;
+      height:41px;
       margin: 5px 0;
-      border-bottom: 1px solid #ccc;
+      padding: 7px 5px 3px 5px;
       transition: all 250ms;
+
       &:focus {
         border-bottom: 1px solid $firefox-light-blue;
       }
@@ -112,12 +123,13 @@ a {
   .user {
     float: right;
     width: 50px;
+
     img {
       border-radius: 50%;
-      height: 32px;
-      width: 32px;
       display: block;
+      height: 32px;
       margin: 9px;
+      width: 32px;
     }
   }
 
@@ -127,7 +139,7 @@ a {
 }
 
 .fa {
-  //font-size: 14px;
+  font-size: 14px;
 }
 
 .container {
@@ -137,6 +149,7 @@ a {
 
 .main-content {
   margin: 10px;
+
   .page-grid {
     @include outer-container;
 
@@ -144,7 +157,6 @@ a {
       @include span-columns(4);
       @include omega(3n);
       padding-bottom: 30px;
-      box-shadow: 0 0 1px #ccc;
 
       .provider {
         color: $dark-gray;
@@ -566,95 +578,107 @@ a {
   }
 }
 
-@media screen and (min-width: 40em) {
-  .nav-collapse {
-    position: relative;
-  }
-  .js .nav-collapse.closed {
-    max-height: none;
-  }
-  .nav-toggle {
-    display: none;
-  }
-}
 
+@media all and (max-width: 768px) {
 
-@media all and (max-width: 980px) {
   .container {
-    width: 100%;
     margin: 0;
     padding: 0;
+    width: 100%;
   }
 
   #main-header {
+    margin: 0;
+
     h1 {
-      width: 15%;
       background-position: center center;
-      padding: 0;
       margin: 0;
+      padding: 0;
+      width: 15%;
+
       span {
         display: none;
       }
     }
+
     nav {
-      width:100%;
       position: absolute;
       top: 50px;
+      width:100%;
+
       &.collapsed {
         display: none;
       }
+
       ul {
         float: none;
-
       }
+
        li {
-        float: none;
-        display: block;
-        width: 100%;
         background: #ddd;
+        display: block;
+        float: none;
+        width: 100%;
+
         &.current a {
           background: #eee !important;
-          color: $firefox-orange;
           border-top: none !important;
-          padding: 22px 10px 12px 10px; 
+          color: $firefox-orange;
+          padding: 22px 10px 12px 10px;
           transition: all 250ms;
         }
       }
     }
+
     .search {
-      width:70%;
       float:left;
+      width:70%;
+
       input {
         width:100%;
       }
     }
+
     .user {
       display: none;
     }
 
     #collapse-container {
-      display: block;
-      width: 13%;
-      margin-left:  2%;
-      float: left;
       background: #ddd;
       cursor: pointer;
-      &:hover {
-      
-      }
+      display: block;
+      float: left;
+      margin-left:  2%;
+      width: 13%;
+
       .fa-5x {
-        margin:0 auto;
         display: block;
+        font-size:32px;
+        margin:0 auto;
         padding: 10px 0 8px 0;
         width:27px;
-        font-size:32px;
       }
     }
   }
 
   .main-content {
+
     &.collapsed {
-      margin-top: 250px;
+      margin-top: 200px;
+    }
+
+    .page-grid {
+      
+      .page {
+        @include span-columns(12);
+        border-bottom: 1px dotted #ccc;
+        margin-bottom: 10px;
+        padding-bottom: 0px;
+
+        .image {
+          height: 285px;
+        }
+      }
     }
   }
 }

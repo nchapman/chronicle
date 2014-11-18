@@ -8,36 +8,38 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header id="main-header">
+    <header id="main-header-wrapper">
       <div class="container">
-        <h1><span>Chronicle</span></h1>
-        <nav  class="nav-collapse collapsed">
-          <ul>
+        <div id="main-header">
+          <h1><span>Chronicle</span></h1>
+          <nav  class="nav-collapse collapsed">
+            <ul>
+              <% if current_user %>
+                <!--li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li-->
+                <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
+                <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
+                <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li>
+              <% end %>
+            </ul>
+          </nav>
+          <div class="user">
             <% if current_user %>
-              <!--li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li-->
-              <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
-              <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
-              <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li>
+              <%= link_to image_tag(current_user.avatar_url), auth_sign_out_path, method: :delete %>
+            <% else %>
+              <%= link_to 'Sign in', auth_sign_in_path %>
             <% end %>
-          </ul>
-        </nav>
-        <div class="user">
+          </div>
           <% if current_user %>
-            <%= link_to image_tag(current_user.avatar_url), auth_sign_out_path, method: :delete %>
-          <% else %>
-            <%= link_to 'Sign in', auth_sign_in_path %>
+            <div class="search">
+              <form method="get" action="/search">
+                <input name="q" value="<%= params[:q] %>" placeholder="search..." />
+              </form>
+            </div>
+            <div id="collapse-container">
+              <div class="fa fa-bars fa-5x"></div>
+            </div>
           <% end %>
         </div>
-        <% if current_user %>
-          <div class="search">
-            <form method="get" action="/search">
-              <input name="q" value="<%= params[:q] %>" placeholder="search..." />
-            </form>
-          </div>
-          <div id="collapse-container">
-            <div class="fa fa-bars fa-5x"></div>
-          </div>
-        <% end %>
       </div>
     </header>
     <div class="container">
