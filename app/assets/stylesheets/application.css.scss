@@ -87,7 +87,7 @@ a {
           font-size: 16px;
           font-weight: 100;
           line-height: 16px;
-          padding: 22px 10px 12px 10px; 
+          padding: 22px 10px 12px 10px;
           text-align: center;
           text-decoration: none;
           transition: all 250ms;
@@ -441,7 +441,7 @@ a {
     }
 
     // Customize visible actions by list
-    &.visits, &.likes {
+    &.visits, &.likes, &.search {
       .page .actions {
         .archive {
           display: none;
@@ -668,7 +668,7 @@ a {
     }
 
     .page-grid {
-      
+
       .page {
         @include span-columns(12);
         border-bottom: 1px dotted #ccc;
