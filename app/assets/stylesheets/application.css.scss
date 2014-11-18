@@ -160,6 +160,7 @@ a {
       .image {
         background-position: center center;
         background-size: cover;
+        display: block;
         height: 185px;
         position: relative;
         width: 100%;
@@ -262,6 +263,7 @@ a {
         background-repeat: no-repeat;
         background-size: cover;
         border: 1px solid $light-gray;
+        display: block;
         float: left;
         height: 45px;
         margin-right: 15px;

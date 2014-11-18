@@ -1,5 +1,4 @@
 $(document).on('ready page:load', function () {
-
   function updateActionState(anchor) {
     var $anchor = $(anchor);
     var label;

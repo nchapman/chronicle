@@ -4,11 +4,13 @@
     <%= link_to user_page.provider_name, user_page.provider_url, class: 'name' %>
     <span class="author"><%= user_page.author_name %></span>
   </div>
-  <div class="image" style="background-image: url(<%= user_page.image_url %>)">
-    <% if user_page.watchable? %>
-      <%= icon('play') %>
-    <% end %>
-  </div>
+  <%= link_to user_page.url do %>
+    <span class="image" style="background-image: url(<%= user_page.image_url %>)">
+      <% if user_page.watchable? %>
+        <%= icon('play') %>
+      <% end %>
+    </span>
+  <% end %>
   <h3 class="title"><%= link_to(truncate(user_page.title || user_page.url, length: 90), title_url) %></h3>
   <div class="url"><%= link_to user_page.url %></div>
   <div class="description"><%= first_sentence(user_page.summary) %></div>
