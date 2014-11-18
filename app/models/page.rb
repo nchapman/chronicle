@@ -71,7 +71,6 @@ class Page < ActiveRecord::Base
     parser = PageParser.new(url).fetch
 
     self.parsed_title = parser.title
-    self.parsed_html = parser.body
     self.parsed_content = parser.content
     self.parsed_status_code = parser.status
     self.parsed_content_type = parser.content_type
