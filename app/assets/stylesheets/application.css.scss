@@ -156,7 +156,7 @@ a {
     .page {
       @include span-columns(4);
       @include omega(3n);
-      padding-bottom: 30px;
+      padding-bottom: 20px;
 
       .provider {
         color: $dark-gray;
@@ -207,7 +207,7 @@ a {
 
       .title {
         font-size: 20px;
-        line-height: 1.3em;
+        line-height: 1.2em;
         margin: 8px 0 8px 0;
 
         a {
