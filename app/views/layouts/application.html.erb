@@ -10,8 +10,8 @@
   <body>
     <header id="main-header">
       <div class="container">
-        <h1>Chronicle</h1>
-        <nav>
+        <h1><span>Chronicle</span></h1>
+        <nav  class="nav-collapse collapsed">
           <ul>
             <% if current_user %>
               <!--li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li-->
@@ -34,11 +34,16 @@
               <input name="q" value="<%= params[:q] %>" placeholder="search..." />
             </form>
           </div>
+          <div id="collapse-container">
+            <div class="fa fa-bars fa-5x"></div>
+          </div>
         <% end %>
       </div>
     </header>
     <div class="container">
-      <%= yield %>
+      <div class="main-content">
+        <%= yield %>
+      </div>
     </div>
   </body>
 </html>
