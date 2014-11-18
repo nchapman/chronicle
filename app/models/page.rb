@@ -3,7 +3,7 @@ class Page < ActiveRecord::Base
 
   # Constants
   MINIMUM_IMAGE_ENTROPY = 1.75
-  EXTRACTED_IMAGE_DENY_PATTERN = /github.com|(\..{2,3}\/$)/
+  EXTRACTED_IMAGE_DENY_PATTERN = /github.com|(\..{2,3}\/$)|([&?]q=)|([&?]page=\d+)/
   SCREENSHOT_DENY_PATTERN = /localhost/
 
   # Relationships
