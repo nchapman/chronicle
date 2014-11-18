@@ -427,16 +427,22 @@ a {
     margin: 0 auto;
 
     .provider {
-      color: $medium-gray;
-      font-size: 13px;
+      color: $dark-gray;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
 
       img {
-        vertical-align: -3px;
+        vertical-align: -4px;
       }
 
       .name {
+        color: inherit;
         display: inline-block;
-        margin-left: 4px;
+        margin-left: 3px;
+        text-decoration: none;
       }
     }
 
