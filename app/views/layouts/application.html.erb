@@ -13,7 +13,7 @@
         <nav>
           <ul>
             <% if current_user %>
-              <li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li>
+              <!--li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Home', root_path %></li-->
               <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
               <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
               <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li>

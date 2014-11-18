@@ -36,7 +36,7 @@ module Authentication
     end
   end
 
-  def redirect_back_or_default(default = root_path)
+  def redirect_back_or_default(default = saves_path)
     redirect_to(session.delete(:return_to) || default)
   end
 
