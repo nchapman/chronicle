@@ -32,7 +32,7 @@
           <% if current_user %>
             <div class="search">
               <form method="get" action="/search">
-                <input name="q" value="<%= params[:q] %>" placeholder="search..." />
+                <input name="q" value="<%= params[:q] %>" placeholder="search <%= number_with_delimiter(current_user.user_pages.count) %> pages" />
               </form>
             </div>
             <div id="collapse-container">
