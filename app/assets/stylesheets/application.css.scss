@@ -5,11 +5,11 @@
 @import "lib/normalize";
 @import "fonts";
 
-$black: #000;
+$black: #333;
 $dark-gray: #444;
-$medium-gray: #888;
+$medium-gray: #bbb;
 $light-gray: #eee;
-$ultra-light-gray: #f8f8f8;
+$ultra-light-gray: #f2f2f2;
 $white: #fff;
 $firefox-blue: #00539F;
 $firefox-light-blue: #0095DD;
@@ -28,6 +28,7 @@ $firefox-light-orange: #FF9500;
 }
 
 body {
+  color: $dark-gray;
   font-family: 'Fira Sans', sans-serif;
 }
 
@@ -39,89 +40,115 @@ a {
   }
 }
 
-.fa {
-  font-size: 14px;
+#main-header-wrapper {
+  background: #f0f0f0;
+  height:50px;
+  margin-bottom: 2em;
+  position: relative;
 }
 
-#container {
-  margin: 0 auto;
-  max-width: 960px;
-  padding: 1em;
+#main-header {
+  margin: 0 10px;
 
-  > header {
-    border-bottom: 1px solid $light-gray;
-    height: 42px;
-    position: relative;
-    margin-bottom: 2em;
+  h1 {
+    background: asset-data-url("chron-logo-temp@2x.png") no-repeat left center;
+    background-size: auto 32px;
+    float: left;
+    font-size: 24px;
+    font-weight: 100;
+    height: 50px;
+    margin: 0;
+    padding: 13px 0 13px 40px;
+    width:160px;
+  }
 
-    h1 {
-      font-size: 20px;
-      height: 28px;
-      left: 0;
+  nav {
+    float:left;
+
+    ul {
+      list-style: none;
       margin: 0;
-      position: absolute;
-      text-transform: uppercase;
-      top: 4px;
-    }
+      padding: 0;
 
-    nav {
-      position: absolute;
-      left: 150px;
-      top: 6px;
+      li {
+        float: left;
 
-      ul {
-        padding: 0;
-        margin: 0;
+        &.current a {
+          background: #fff;
+          border-top: 3px solid $firefox-orange;
+          color: $firefox-orange;
+          padding: 19px 10px 12px 10px;
+          transition: all 250ms;
+        }
 
-        li {
-          float: left;
-          list-style: none;
-          margin-right: 16px;
+        a {
+          color: #666;
+          display: block;
+          font-size: 16px;
+          font-weight: 100;
+          line-height: 16px;
+          padding: 22px 10px 12px 10px;
+          text-align: center;
+          text-decoration: none;
+          transition: all 250ms;
 
-          a {
-            color: $medium-gray;
-            font-size: 14px;
-            font-weight: 300;
-            letter-spacing: 0.6px;
-            text-decoration: none;
-            text-transform: uppercase;
-
-            &:hover {
-              color: $firefox-light-orange;
-            }
-          }
-
-          &.current a {
-            color: $black;
-            font-weight: normal;
+          &:hover {
+            background-color: #fff;
           }
         }
       }
     }
+  }
 
-    .search {
-      position: absolute;
-      right: 50px;
-      top: 4px;
+  .search {
+    float: right;
 
-      input {
-        font-size: 14px;
-      }
-    }
+    input {
+      border-bottom: 1px solid #ccc;
+      border: none;
+      display: block;
+      font-size: 24px;
+      font-weight: 100;
+      height:41px;
+      margin: 5px 0;
+      padding: 7px 5px 3px 5px;
+      transition: all 250ms;
 
-    .user {
-      position: absolute;
-      right: 0;
-      top: 2px;
-
-      img {
-        border-radius: 50%;
-        height: 32px;
-        width: 32px;
-        vertical-align: middle;
+      &:focus {
+        border-bottom: 1px solid $firefox-light-blue;
       }
     }
   }
+
+  .user {
+    float: right;
+    width: 50px;
+
+    img {
+      border-radius: 50%;
+      display: block;
+      height: 32px;
+      margin: 9px;
+      width: 32px;
+    }
+  }
+
+  #collapse-container {
+    display: none;
+  }
+}
+
+.fa {
+  font-size: 14px;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: 960px;
+}
+
+.main-content {
+  margin: 10px;
 
   .page-grid {
     @include outer-container;
@@ -129,7 +156,7 @@ a {
     .page {
       @include span-columns(4);
       @include omega(3n);
-      padding-bottom: 30px;
+      padding-bottom: 20px;
 
       .provider {
         color: $dark-gray;
@@ -180,7 +207,7 @@ a {
 
       .title {
         font-size: 20px;
-        line-height: 1.3em;
+        line-height: 1.2em;
         margin: 8px 0 8px 0;
 
         a {
@@ -414,7 +441,7 @@ a {
     }
 
     // Customize visible actions by list
-    &.visits, &.likes {
+    &.visits, &.likes, &.search {
       .page .actions {
         .archive {
           display: none;
@@ -547,6 +574,111 @@ a {
 
     a {
       text-decoration: none;
+    }
+  }
+}
+
+
+@media all and (max-width: 768px) {
+
+  .container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+
+  #main-header {
+    margin: 0;
+
+    h1 {
+      background-position: center center;
+      margin: 0;
+      padding: 0;
+      width: 15%;
+
+      span {
+        display: none;
+      }
+    }
+
+    nav {
+      position: absolute;
+      top: 50px;
+      width:100%;
+
+      &.collapsed {
+        display: none;
+      }
+
+      ul {
+        float: none;
+      }
+
+       li {
+        background: #ddd;
+        display: block;
+        float: none;
+        width: 100%;
+
+        &.current a {
+          background: #eee !important;
+          border-top: none !important;
+          color: $firefox-orange;
+          padding: 22px 10px 12px 10px;
+          transition: all 250ms;
+        }
+      }
+    }
+
+    .search {
+      float:left;
+      width:70%;
+
+      input {
+        width:100%;
+      }
+    }
+
+    .user {
+      display: none;
+    }
+
+    #collapse-container {
+      background: #ddd;
+      cursor: pointer;
+      display: block;
+      float: left;
+      margin-left:  2%;
+      width: 13%;
+
+      .fa-5x {
+        display: block;
+        font-size:32px;
+        margin:0 auto;
+        padding: 10px 0 8px 0;
+        width:27px;
+      }
+    }
+  }
+
+  .main-content {
+
+    &.collapsed {
+      margin-top: 200px;
+    }
+
+    .page-grid {
+
+      .page {
+        @include span-columns(12);
+        border-bottom: 1px dotted #ccc;
+        margin-bottom: 10px;
+        padding-bottom: 0px;
+
+        .image {
+          height: 285px;
+        }
+      }
     }
   }
 }

@@ -1,4 +1,4 @@
-<div class="page-list">
+<div class="page-list search">
   <% @user_pages.each_with_hit do |user_page, hit| %>
     <!-- SCORE: <%= hit._score %> -->
     <%= render partial: 'user_pages/item', locals: { title_url: user_page.url, user_page: user_page } %>

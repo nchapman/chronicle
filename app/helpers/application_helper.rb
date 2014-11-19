@@ -1,8 +1,8 @@
 module ApplicationHelper
   # This is gross and temporary
-  def first_sentence(input)
+  def first_sentence(input, length = 200)
     if input
-      "#{input.split(/\.\s/).first}.".sub(/\.\.$/, '.')
+      truncate("#{input.split(/\.\s/).first}.".sub(/\.\.$/, '.'), length: length)
     end
   end
 

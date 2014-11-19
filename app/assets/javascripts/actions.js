@@ -1,4 +1,9 @@
 $(document).on('ready page:load', function () {
+
+  $("#collapse-container").click(function(){
+    $('.nav-collapse, .main-content').toggleClass('collapsed');
+  });
+
   function updateActionState(anchor) {
     var $anchor = $(anchor);
     var label;

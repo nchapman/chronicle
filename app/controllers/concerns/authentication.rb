@@ -5,6 +5,7 @@ module Authentication
     cookies.signed[:user_id] = { value: user.id, expires: 1.month.from_now }
 
     @current_user = user
+
   end
 
   def current_user
