@@ -140,7 +140,7 @@ class UserPage < ActiveRecord::Base
       value *= 2.0 if media_html.present?
       value *= 1.2 if content.present?
 
-      value *= 0.5 if page.hash_bang?
+      value *= 0.6 if page.hash_bang?
       value *= 0.3 if !page.parsable?
       value *= 0.3 if page.search?
 

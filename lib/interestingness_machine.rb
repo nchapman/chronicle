@@ -1,5 +1,5 @@
 class InterestingnessMachine
-  def initialize(user_pages, percent = 0.3)
+  def initialize(user_pages, percent = 0.25)
     @user_pages = user_pages
     @percent = percent
 
@@ -16,7 +16,7 @@ class InterestingnessMachine
     while @most_interesting_user_pages.length < (@percent * @user_pages.length)
       user_page = sorted_user_pages[i]
 
-      unless most_interesting_url?(user_page.url)
+      if !most_interesting_url?(user_page.url) && !most_interesting_title?(user_page.title)
         @most_interesting_user_pages << user_page
       end
 
@@ -34,6 +34,10 @@ class InterestingnessMachine
 
     def most_interesting_url?(url)
       @most_interesting_user_pages.find { |up| normalize_url(up.url) == normalize_url(url) }
+    end
+
+    def most_interesting_title?(title)
+      @most_interesting_user_pages.find { |up| up.title == title }
     end
 
     def normalize_url(url)

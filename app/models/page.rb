@@ -155,7 +155,7 @@ class Page < ActiveRecord::Base
   end
 
   def hash_bang?
-    url =~ /#!/
+    url =~ /(#!)|(#(.*?)\/)/
   end
 
   def valid_extracted_image_url?

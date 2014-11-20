@@ -1,4 +1,6 @@
 <% @visits.each do |visit| %>
-  <p><%= number_with_precision(visit.user_page.interestingness, precision: 2) %> - <span style="font-size: <%= visit.user_page.interestingness %>em; <%= 'font-weight: bold; color: #00539F;' if @machine.most_interesting?(visit.user_page) %>"><%= visit.user_page.title %></span></p>
-  <p><%= visit.user_page.url %></p>
+  <div style="font-size: <%= visit.user_page.interestingness %>em;">
+    <p><%= number_with_precision(visit.user_page.interestingness, precision: 2) %> - <span style="<%= 'font-weight: bold; color: #00539F;' if @machine.most_interesting?(visit.user_page) %>"><%= visit.user_page.title %></span>
+    <br/><%= visit.user_page.url %></p>
+  </div>
 <% end if current_user %>
