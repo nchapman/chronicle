@@ -1,48 +1,100 @@
 class InterestingnessMachine
-  def initialize(user_pages, percent = 0.25)
+  def initialize(user_pages, distributions = { most: 0.15, very: 0.10 })
     @user_pages = user_pages
-    @percent = percent
+    @distributions = distributions
+    @interesting_user_pages = {}
+    @user_pages_distribution = {}
+    @urls_distribution = {}
 
-    @most_interesting_user_pages = []
+    @unique_distributions = {}
 
     calculate
   end
 
   def calculate
-    sorted_user_pages = @user_pages.sort { |a,b| b.interestingness <=> a.interestingness }
+    sorted_user_pages.each do |user_page|
+      @distributions.each_pair do |key, value|
+        # Next distribution if this one is full
+        next if distribution_quota_met?(key)
 
-    i = 0
+        # Distribute the user page unless we've already distributed one like it
+        distribute_user_page(key, user_page) unless already_distributed?(user_page)
 
-    while @most_interesting_user_pages.length < (@percent * @user_pages.length)
-      user_page = sorted_user_pages[i]
-
-      if !most_interesting_url?(user_page.url) && !most_interesting_title?(user_page.title)
-        @most_interesting_user_pages << user_page
+        # Next user_page
+        break
       end
-
-      i += 1
     end
 
-    @most_interesting_user_pages.each { |up| puts [up.id, up.title, up.url].inspect }
+    @urls_distribution.keys.sort.each do |k|
+      puts k
+      puts @urls_distribution[k].title
+    end
   end
 
-  def most_interesting?(user_page)
-    !!@most_interesting_user_pages.delete(user_page)
+  def get_unique_distribution(external_key, user_page)
+    distribution = get_distribution(user_page)
+
+    if @unique_distributions[user_page] == external_key
+      distribution
+    elsif !@unique_distributions.has_key?(user_page)
+      @unique_distributions[user_page] = external_key
+
+      distribution
+    else
+      nil
+    end
+  end
+
+  def uniquely_interesting?(external_key, user_page)
+    !!(get_unique_distribution(external_key, user_page))
+  end
+
+  def get_distribution(user_page)
+    @user_pages_distribution[user_page]
+  end
+
+  def interesting?(user_page)
+    @user_pages_distribution.has_key?(user_page)
   end
 
   private
 
-    def most_interesting_url?(url)
-      @most_interesting_user_pages.find { |up| normalize_url(up.url) == normalize_url(url) }
+    def distribution_quota_met?(key)
+      @interesting_user_pages[key] ||= []
+
+      @interesting_user_pages[key].length >= (@user_pages.length * @distributions[key])
     end
 
-    def most_interesting_title?(title)
-      @most_interesting_user_pages.find { |up| up.title == title }
+    def sorted_user_pages
+      @sorted_user_pages ||= @user_pages.sort { |a,b| b.interestingness <=> a.interestingness }
+    end
+
+    def distribute_user_page(key, user_page)
+      @interesting_user_pages[key] ||= []
+      @interesting_user_pages[key] << user_page
+
+      @user_pages_distribution[user_page] = key
+      @urls_distribution[normalize_url(user_page.url)] = user_page
+    end
+
+    def already_distributed?(user_page)
+      @user_pages_distribution.has_key?(user_page) || @urls_distribution.has_key?(normalize_url(user_page.url))
+      # Bail if we've already assigned this very user_page
+      #return true if @user_pages_distribution[user_page]
+
+      # Check to see if this URL has been distributed
+      # @interesting_user_pages.each_pair do |k, user_pages|
+      #   user_pages.each do |up|
+      #     return true if normalize_url(up.url) == normalize_url(user_page.url)
+      #   end
+      # end
+
+      # false
     end
 
     def normalize_url(url)
       @cached_normalized_urls ||= {}
 
-      @cached_normalized_urls[url] ||= PostRank::URI.normalize(url)
+      @cached_normalized_urls[url] ||= PostRank::URI.normalize(url).to_s
     end
 end

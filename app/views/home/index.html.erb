@@ -1,6 +1,40 @@
-<% @visits.each do |visit| %>
+<% collapsed_count = 1 %>
+
+<% @visits.each_with_index do |visit, i| %>
+  <% user_page = visit.user_page %>
+  <% previous_visit = i >= 0 && @visits[i - 1] %>
+  <% previous_was_interesting = previous_visit && @machine.uniquely_interesting?(previous_visit.id, previous_visit.user_page) %>
+  <% distribution = @machine.get_unique_distribution(visit.id, visit.user_page) %>
+  <% interesting = @machine.uniquely_interesting?(visit.id, visit.user_page) %>
+  <% collapsed_count += 1 if !interesting %>
+
+  <% if interesting && !previous_was_interesting %>
+      <strong><%= collapsed_count %> collapsed items</strong>
+    </div>
+  <% end %>
+
+  <% if !interesting && previous_was_interesting %>
+    <% collapsed_count = 1 %>
+    <div class="collapse">
+  <% end %>
+
   <div style="font-size: <%= visit.user_page.interestingness %>em;">
-    <p><%= number_with_precision(visit.user_page.interestingness, precision: 2) %> - <span style="<%= 'font-weight: bold; color: #00539F;' if @machine.most_interesting?(visit.user_page) %>"><%= visit.user_page.title %></span>
+    <p><%= number_with_precision(visit.user_page.interestingness, precision: 2) %> - <span class="<%= distribution %>"><%= visit.user_page.title %></span>
     <br/><%= visit.user_page.url %></p>
   </div>
 <% end if current_user %>
+
+<style>
+  .collapse {
+    border-top: 10px solid #ccc;
+    height: 0;
+    overflow: hidden;
+  }
+  .most {
+    color: blue;
+  }
+
+  .very {
+    color: yellow;
+  }
+</style>
