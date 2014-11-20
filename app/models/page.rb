@@ -89,10 +89,6 @@ class Page < ActiveRecord::Base
     status_code == 200
   end
 
-  def interesting?
-    parsable? && !(url =~ /search\/?\?q=/i)
-  end
-
   def image_url
     if valid_extracted_image_url?
       extracted_image_url
@@ -150,18 +146,30 @@ class Page < ActiveRecord::Base
     end
   end
 
+  def interesting?
+    parsable? && !search?
+  end
+
+  def search?
+    url =~ /[?&#][pq]=/i
+  end
+
+  def hash_bang?
+    url =~ /#!/
+  end
+
+  def valid_extracted_image_url?
+    parsable? &&
+    extracted_image_url &&
+    (extracted_image_entropy.nil? || extracted_image_entropy > MINIMUM_IMAGE_ENTROPY) &&
+    !(url =~ EXTRACTED_IMAGE_DENY_PATTERN)
+  end
+
+  def valid_screenshot_url?
+    parsable? && !(url =~ SCREENSHOT_DENY_PATTERN)
+  end
+
   private
-
-    def valid_extracted_image_url?
-      parsable? &&
-      extracted_image_url &&
-      (extracted_image_entropy.nil? || extracted_image_entropy > MINIMUM_IMAGE_ENTROPY) &&
-      !(url =~ EXTRACTED_IMAGE_DENY_PATTERN)
-    end
-
-    def valid_screenshot_url?
-      parsable? && !(url =~ SCREENSHOT_DENY_PATTERN)
-    end
 
     def build_url2png_url(max_width = 500)
       query_string = "?url=#{CGI.escape(url)}&viewport=1280x800&thumbnail_max_width=#{max_width}"

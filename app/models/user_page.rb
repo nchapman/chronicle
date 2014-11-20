@@ -129,6 +129,27 @@ class UserPage < ActiveRecord::Base
     hash
   end
 
+  def interestingness
+    unless @interestingness
+      value = 1.0
+
+      value *= 2.0 if liked
+      value *= 1.2 if saved
+      value *= 1.2 if page.valid_extracted_image_url?
+      value *= 1.2 if page.extracted_image_width && page.extracted_image_width > 250
+      value *= 2.0 if media_html.present?
+      value *= 1.2 if content.present?
+
+      value *= 0.5 if page.hash_bang?
+      value *= 0.3 if !page.parsable?
+      value *= 0.3 if page.search?
+
+      @interestingness = value
+    end
+
+    @interestingness
+  end
+
   private
 
     def assign_page

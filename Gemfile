@@ -28,6 +28,7 @@ gem 'http'
 gem 'nokogiri'
 gem 'ruby-readability', require: 'readability'
 gem 'font-awesome-sass', '~> 4.2.0'
+gem 'postrank-uri'
 
 group :development, :test do
   gem 'byebug'
