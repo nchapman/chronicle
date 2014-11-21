@@ -135,14 +135,14 @@ class UserPage < ActiveRecord::Base
 
       value *= 2.0 if liked
       value *= 1.2 if saved
-      value *= 1.2 if page.valid_extracted_image_url?
+      value *= 1.3 if page.valid_extracted_image_url?
       value *= 1.2 if page.extracted_image_width && page.extracted_image_width > 250
       value *= 2.0 if media_html.present?
       value *= 1.2 if content.present?
 
       value *= 0.6 if page.hash_bang?
       value *= 0.3 if !page.parsable?
-      value *= 0.3 if page.search?
+      value *= 0.2 if page.search?
 
       @interestingness = value
     end

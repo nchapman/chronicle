@@ -1,5 +1,5 @@
 class InterestingnessMachine
-  def initialize(user_pages, distributions = { most: 0.15, very: 0.10 })
+  def initialize(user_pages, distributions = { most: 0.05, very: 0.05, fairly: 0.10, mildly: 0.10 })
     @user_pages = user_pages
     @distributions = distributions
     @interesting_user_pages = {}

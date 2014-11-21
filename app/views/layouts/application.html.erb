@@ -8,42 +8,37 @@
     <%= csrf_meta_tags %>
   </head>
   <body>
-    <header id="main-header-wrapper">
-      <div class="container">
-        <div id="main-header">
-          <h1><span>Chronicle</span></h1>
-          <nav  class="nav-collapse collapsed">
-            <ul>
-              <% if current_user %>
-                <li <% if controller?('home') %>class="current"<% end %>><%= link_to 'Chronicle', root_path %></li>
-                <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
-                <li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
-                <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li>
-              <% end %>
-            </ul>
-          </nav>
-          <div class="user">
+    <header class="band">
+      <div class="band-inner">
+        <h1>Chronicle</h1>
+        <nav>
+          <ul>
             <% if current_user %>
-              <%= link_to image_tag(current_user.avatar_url), auth_sign_out_path, method: :delete %>
-            <% else %>
-              <%= link_to 'Sign in', auth_sign_in_path %>
+              <li <% if controller?('saves') %>class="current"<% end %>><%= link_to 'Reading List', saves_path %></li>
+              <li <% if controller?('home') %>class="current"<% end %>><%= link_to 'History', root_path %></li>
+              <!--li <% if controller?('likes') %>class="current"<% end %>><%= link_to 'Likes', likes_path %></li>
+              <li <% if controller?('visits') %>class="current"<% end %>><%= link_to 'History', visits_path %></li-->
             <% end %>
-          </div>
+          </ul>
+        </nav>
+        <div class="user">
           <% if current_user %>
-            <div class="search">
-              <form method="get" action="/search">
-                <input name="q" value="<%= params[:q] %>" placeholder="search <%= number_with_delimiter(current_user.user_pages.count) %> pages" />
-              </form>
-            </div>
-            <div id="collapse-container">
-              <div class="fa fa-bars fa-5x"></div>
-            </div>
+            <%= link_to image_tag(current_user.avatar_url), auth_sign_out_path, method: :delete %>
+          <% else %>
+            <%= link_to 'Sign in', auth_sign_in_path %>
           <% end %>
         </div>
+        <% if current_user %>
+          <div class="search">
+            <form method="get" action="/search">
+              <input name="q" value="<%= params[:q] %>" />
+            </form>
+          </div>
+        <% end %>
       </div>
     </header>
-    <div class="container">
-      <div class="main-content">
+    <div class="band content">
+      <div class="band-inner">
         <%= yield %>
       </div>
     </div>

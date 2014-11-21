@@ -1,4 +1,5 @@
-<div class="page <%= user_page.interesting? ? 'interesting' : 'boring' %>">
+<div class="page <%= css_class %>">
+  <span class="fa fa-map-marker type"></span>
   <%= link_to title_url do %>
     <span class="image <%= user_page.image_size_ratio <= 1 ? 'landscape' : 'portrait' %>" style="background-image: url(<%= user_page.image_url %>)">
       <% if user_page.watchable? %>
@@ -9,12 +10,12 @@
   <div class="text">
     <div class="provider">
       <%= image_tag(user_page.favicon_url(image_url('globe.png')), class: 'favicon', width: 16, height: 16) if user_page.favicon_url %>
-      <%= link_to user_page.provider_name, user_page.provider_url, class: 'name' %>
+      <span class="name"><%= user_page.provider_name %></span>
       <span class="author"><%= user_page.author_name %></span>
     </div>
     <h3 class="title"><%= link_to(truncate(user_page.title || user_page.url, length: 90), title_url) %></h3>
     <div class="url"><%= link_to user_page.url %></div>
-    <div class="description"><%= first_sentence(user_page.summary) %></div>
+    <div class="description"><%= user_page.summary %></div>
     <div class="actions">
       <% if user_page.watchable? %>
         <%= action_button user_page, :saved, label: 'Watch Later', active_label: 'Watching Later', class: 'save', icon: 'mail-forward' %>

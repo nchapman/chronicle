@@ -119,7 +119,7 @@ class Page < ActiveRecord::Base
   end
 
   def summary
-    extracted_lead || extracted_description
+    extracted_description || extracted_lead
   end
 
   def published_at
@@ -161,7 +161,7 @@ class Page < ActiveRecord::Base
   def valid_extracted_image_url?
     parsable? &&
     extracted_image_url &&
-    (extracted_image_entropy.nil? || extracted_image_entropy > MINIMUM_IMAGE_ENTROPY) &&
+    (extracted_image_entropy && extracted_image_entropy > MINIMUM_IMAGE_ENTROPY) &&
     !(url =~ EXTRACTED_IMAGE_DENY_PATTERN)
   end
 

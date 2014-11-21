@@ -1,5 +1,6 @@
 <% collapsed_count = 1 %>
-
+<% first_collapsed_visit = nil %>
+<div class="page-list">
 <% @visits.each_with_index do |visit, i| %>
   <% user_page = visit.user_page %>
   <% previous_visit = i >= 0 && @visits[i - 1] %>
@@ -9,32 +10,18 @@
   <% collapsed_count += 1 if !interesting %>
 
   <% if interesting && !previous_was_interesting %>
-      <strong><%= collapsed_count %> collapsed items</strong>
+      </div>
+      <div class="label"><span class="time"><%= Time.current.to_date == first_collapsed_visit.created_at.to_date ? 'Today' : 'Yesterday' %> <%= first_collapsed_visit.created_at.strftime('%I:%M %p') %></span> <span class="count">Show <%= collapsed_count %> more</span></div>
     </div>
   <% end %>
 
   <% if !interesting && previous_was_interesting %>
     <% collapsed_count = 1 %>
-    <div class="collapse">
+    <% first_collapsed_visit = visit %>
+    <div class="boring-container">
+      <div class="boring-pages">
   <% end %>
 
-  <div style="font-size: <%= visit.user_page.interestingness %>em;">
-    <p><%= number_with_precision(visit.user_page.interestingness, precision: 2) %> - <span class="<%= distribution %>"><%= visit.user_page.title %></span>
-    <br/><%= visit.user_page.url %></p>
-  </div>
+  <%= render partial: 'user_pages/item_2', locals: { user_page: user_page, title_url: user_page.url, css_class: distribution ? "#{distribution}-interesting" : 'boring' } %>
 <% end if current_user %>
-
-<style>
-  .collapse {
-    border-top: 10px solid #ccc;
-    height: 0;
-    overflow: hidden;
-  }
-  .most {
-    color: blue;
-  }
-
-  .very {
-    color: yellow;
-  }
-</style>
+</div>
